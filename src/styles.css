@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "@ng-select/ng-select/themes/default.theme.css";
+ /* .ng-select .ng-select-single .ng-select-container {
+        height: 44px !important;
+        border-radius: 22px !important;
+    } */
+.form-control{
+  height: 38px;
+}
+.form-label{
+  font-weight: bold !important;
+}
+

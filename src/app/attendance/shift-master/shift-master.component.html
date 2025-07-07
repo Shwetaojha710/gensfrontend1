@@ -1,0 +1,171 @@
+<div class="container mt-5">
+  <div class="row mb-6" *ngIf="createFlag">
+    <div class="col-md">
+      <div class="card">
+        <h5 class="card-header d-flex justify-content-between align-items-center">
+          <span>Shift</span>
+          <button
+            type="button"
+            class="btn btn-md btn-primary float-end"
+            (click)="back()"
+          >
+            <i class="fa-solid fa-arrow-left"></i>&nbsp;back
+          </button>
+        </h5>
+
+        <hr style="margin: 0rem 0 !important" />
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <label for="defaultFormControlInput" class="form-label">Type</label>
+              <ng-select
+                [items]="status"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="obj['shift']"
+                [multiple]="false"
+                placeholder="Select Shift Type"
+                name="status"
+                id="select2Danger"
+              >
+              </ng-select>
+            </div>
+
+            <div class="col-4">
+              <label for="defaultFormControlInput" class="form-label"
+                >Start Time</label
+              >
+
+              <input
+                type="time"
+                class="form-control"
+                [(ngModel)]="obj.startTime"
+                name="start_time"
+                required
+                #start_timeRef="ngModel"
+                placeholder="Enter Start Time"
+              />
+              <small
+                class="text-danger"
+                *ngIf="start_timeRef.invalid && start_timeRef.touched"
+              >
+                Enter valid Start Time
+              </small>
+            </div>
+            <div class="col-4">
+              <label for="defaultFormControlInput" class="form-label"
+                >End Time</label
+              >
+              <input
+                type="time"
+                class="form-control"
+                id="defaultFormControlInput"
+                placeholder="Enter End Time"
+                [(ngModel)]="obj['endTime']"
+                aria-describedby="defaultFormControlHelp"
+                required
+                #EndTimeRef="ngModel"
+                placeholder="Enter End Time"
+              />
+              <small
+                class="text-danger"
+                *ngIf="EndTimeRef.invalid && start_timeRef.touched"
+              >
+                Enter valid End Time
+              </small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mt-2">
+              <button
+                *ngIf="createFlag && updateFlag == false"
+                type="button"
+                class="btn btn-sm btn-primary waves-effect waves-light"
+                (click)="onSubmit()"
+              >
+                Submit
+              </button>
+              <button
+                *ngIf="updateFlag"
+                type="button"
+                class="btn btn-sm btn-primary waves-effect waves-light"
+                (click)="updatedata()"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-6">
+    <div class="col-md">
+      <div class="card">
+        <h5
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <span>Shift List</span>
+          <button
+            *ngIf="createFlag == false"
+            type="button"
+            class="btn btn-md btn-primary float-end"
+            (click)="opencreate()"
+          >
+            <i class="fa-solid fa-plus"></i>&nbsp;Add
+          </button>
+        </h5>
+
+        <div class="table-responsive text-nowrap">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>SI.No</th>
+                <th>Shift Type</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
+                <th>createdAt</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+              <tr *ngFor="let item of shiftList; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item["shift"] }}</td>
+                <td>{{ item["startTime"] }}</td>
+                <td>{{ item["endTime"] }}</td>
+                <td>
+                  <span class="badge rounded overflow-hidden px-2" [ngClass]="getStatusClass(item['status'])" >
+                    {{ item["status"] }}
+                  </span>
+                </td>
+                <td>{{ item["createdAt"] | date : "M/d/yy h:mm a" }}</td>
+
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-sm"
+                    (click)="update(item)"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  &nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="delete(item)"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                     &nbsp;
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
