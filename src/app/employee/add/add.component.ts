@@ -4,19 +4,35 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data.service';
+import { Router, RouterModule } from '@angular/router';
+import { QualificationComponent } from "../profile/professional-info/qualification/qualification.component";
+import { ExperienceComponent } from '../profile/professional-info/experience/experience.component';
+import { BankDetailsComponent } from '../profile/professional-info/bank-details/bank-details.component';
+import { StatusService } from '../../services/status.service';
+import Swal from 'sweetalert2';
+import { MasterService } from '../../services/master.service';
+import { Notyf } from 'notyf';
+import * as bootstrap from 'bootstrap';
 @Component({
   selector: 'app-add',
-
-imports: [ CommonModule, FormsModule,NgSelectModule ],
+  standalone: true,
+  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent,ExperienceComponent,BankDetailsComponent],
   templateUrl: './add.component.html',
-  styleUrl: './add.component.css'
+  styleUrls: ['./add.component.css']
 })
 export class AddComponent {
+    notyf: Notyf;
 personalDetails:any={}
-  constructor(private employeeService: EmployeeService,public dataService: DataService) {
+  constructor(
+      private Documentervice: MasterService,
+        private router: Router,
+    private employeeService: EmployeeService,public dataService: DataService,public statusService:StatusService) {
        this.countrydd();
-      this.dataService.currentMessage.subscribe(msg => this.personalDetails = msg);
-      console.log(this.personalDetails);
+      this.dataService.currentMessage.subscribe(msg => {
+  this.personalDetails = msg || {};
+  console.log(this.personalDetails);
+});
+    this.notyf = new Notyf();
    }
  maritalStatusList = [
     { value: 'Single', label: 'Single' },
@@ -30,8 +46,10 @@ personalDetails:any={}
     { value: 'Female', label: 'Female' },
     { value: 'Other', label: 'Other' }
   ]
- async ngOnInit()  {
-
+    baseurl: any;
+ async ngOnInit() {
+    this.baseurl = localStorage.getItem('base_url')?.replace(/["\\,]/g, '') || '';
+    await this.fetchDocument()
   }
    countryList: any = [];
   employmentTypes: any[] = [];
@@ -78,5 +96,120 @@ cities:any=[]
   }
   toUppercase(){
 
+  }
+  addPhoto(){
+ const uploadData = new FormData();
+    uploadData.append('id', this.personalDetails.id)
+    if (this.selectedFile) {
+      uploadData.append('profileImage', this.selectedFile, this.selectedFile.name);
+    } else {
+      Swal.fire({
+        toast: true,
+        position: "top",
+        showConfirmButton: false,
+        icon: "warning",
+        timer: 5000,
+        title: "Select a file to upload",
+      });
+      return;
+    }
+
+
+
+    this.employeeService.uploadImage(uploadData).subscribe({
+      next: (response: any) => {
+        console.log('response', response);
+
+        let message = response.message ? response.message : 'Data found Successfully';
+        let status = this.statusService.handleResponseStatus(response.status, message);
+        console.log(status)
+        console.log("response", response);
+
+        if (status === true) {
+
+          this.notyf.success(message)
+          this.fetchDocument();
+          // this.resetForm();
+        }
+        else if (status === "expired") {
+          this.router.navigate(["/login"]);
+        }
+
+        else {
+          this.notyf.error(message)
+        }
+
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.notyf.error(err)
+      }
+    });
+
+  }
+   isFileInvalid: boolean = false;
+  selectedFile: File | null = null;
+
+onFileChange(event: any): void {
+  const file: File = event.target.files[0];
+
+  if (!file) {
+    this.selectedFile = null;
+    return;
+  }
+
+  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+  const maxSize = 2 * 1024 * 1024; // 2MB
+
+  if (!allowedTypes.includes(file.type)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Invalid File Type',
+      text: 'Only JPG, JPEG, and PNG formats are allowed.',
+    });
+    event.target.value = ''; // Clear the file input
+    this.selectedFile = null;
+    return;
+  }
+
+  if (file.size > maxSize) {
+    Swal.fire({
+      icon: 'error',
+      title: 'File Too Large',
+      text: 'Maximum allowed file size is 2MB.',
+    });
+    event.target.value = ''; // Clear the file input
+    this.selectedFile = null;
+    return;
+  }
+
+  this.selectedFile = file;
+}
+
+  DocumentList:any
+   async fetchDocument() {
+    this.DocumentList = []
+    let obj: any = {}
+    obj['id'] = this.personalDetails.id
+    console.log(obj, "object data ")
+    this.employeeService.getUploadImage(obj).subscribe(data => {
+      if (data['status'] == true) {
+        this.notyf.success(data['message']);
+        this.DocumentList = data.data;
+         console.log( this.DocumentList);
+
+          this.DocumentList = `${this.baseurl}/${this.DocumentList}`
+
+      } else {
+        this.notyf.error(data['message']);
+      }
+    });
+
+
+}
+ openModal() {
+    const modalElement = document.getElementById('imageModal');
+    const modal = new bootstrap.Modal(modalElement!);
+    modal.show();
   }
 }

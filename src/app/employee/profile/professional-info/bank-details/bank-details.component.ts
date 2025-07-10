@@ -5,20 +5,19 @@ import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Notyf } from 'notyf';
 import Swal from 'sweetalert2';
-import { StatusService } from '../../../../services/status.service';
-import { ValidationUtil } from '../../../../shared/utils/validation.util';
-import { EmployeeService } from '../../../../services/employee.service';
 import { DataService } from '../../../../services/data.service';
+import { EmployeeService } from '../../../../services/employee.service';
+import { StatusService } from '../../../../services/status.service';
 
 @Component({
-  selector: 'app-experience',
+  selector: 'app-bank-details',
    imports: [NgSelectModule,
     FormsModule, CommonModule],
-  templateUrl: './experience.component.html',
-  styleUrl: './experience.component.css'
+  templateUrl: './bank-details.component.html',
+  styleUrl: './bank-details.component.css'
 })
 
-export class ExperienceComponent {
+export class BankDetailsComponent {
   obj: any = {}
   notyf: Notyf;
   desigantionList: any = []
@@ -32,11 +31,11 @@ export class ExperienceComponent {
   }
   departmentDD: any = []
   async ngOnInit() {
-    // await this.experiencedd()
-    await this.fetchexperience()
+    // await this.Bankdd()
+    await this.fetchBank()
 
   }
-  // async experiencedd() {
+  // async Bankdd() {
   //   this.departmentDD = []
 
 
@@ -80,14 +79,15 @@ export class ExperienceComponent {
 
   onSubmit() {
     console.log(this.obj)
-    // if (!ValidationUtil.showRequiredError('experience name', this.obj.name, this.notyf)) {
+    // if (!ValidationUtil.showRequiredError('Bank name', this.obj.name, this.notyf)) {
     //   return;
     // }
     // if (!ValidationUtil.showRequiredError('Department', this.obj['department'], this.notyf)) {
     //   return;
     // }
 this.obj['employeeId']=this.personalDetails.id
-    this.empService.addexperience(this.obj).subscribe({
+this.obj['accountNumber']=this.obj['accountNumber'].toString()
+    this.empService.addBank(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
 
@@ -100,6 +100,7 @@ this.obj['employeeId']=this.personalDetails.id
           this.notyf.success(message)
 
           this.back()
+           this.fetchBank()
         }
         else if (status === "expired") {
           this.router.navigate(["/login"]);
@@ -119,11 +120,11 @@ this.obj['employeeId']=this.personalDetails.id
 
 
   }
-  async fetchexperience() {
+  async fetchBank() {
     let obj :any={}
     obj['employeeId']=this.personalDetails.id
     this.desigantionList = []
-    this.empService.getexperiences(obj).subscribe(data => {
+    this.empService.getBanks(obj).subscribe(data => {
        let message = data.message ? data.message : 'Data found Successfully';
         let status = this.statusService.handleResponseStatus(data.status, message);
 
@@ -163,7 +164,7 @@ this.obj['employeeId']=this.personalDetails.id
   updatedata() {
     this.obj['id']=this.editingId
       this.obj['employeeId']=this.personalDetails.id
-    this.empService.updateexperience(this.editingId, this.obj).subscribe({
+    this.empService.updateBank(this.editingId, this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -172,7 +173,7 @@ this.obj['employeeId']=this.personalDetails.id
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchexperience();
+          this.fetchBank();
           this.resetForm();
         }
         else if (status === "expired") {
@@ -210,7 +211,7 @@ this.obj['employeeId']=this.personalDetails.id
           reverseButtons: true
         }).then((result) => {
           if (result.isConfirmed) {
-            this.deleteexperience(id)
+            this.deleteBank(id)
             // Swal.fire({
             //   title: "Deleted!",
             //   text: "Your file has been deleted.",
@@ -230,11 +231,12 @@ this.obj['employeeId']=this.personalDetails.id
 
 
   }
-  deleteexperience(id:any){
+  deleteBank(id:any){
      let obj:any={}
     obj['id']=id
+    obj["employeeId"]=this.personalDetails.id
 
- this.empService.deleteexperience(obj).subscribe({
+ this.empService.deleteBank(obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -243,7 +245,7 @@ this.obj['employeeId']=this.personalDetails.id
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchexperience();
+          this.fetchBank();
         }
         else if (status === "expired") {
           this.router.navigate(["/login"]);
@@ -260,4 +262,3 @@ this.obj['employeeId']=this.personalDetails.id
     })
   }
 }
-

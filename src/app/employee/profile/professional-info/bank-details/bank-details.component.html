@@ -5,7 +5,7 @@
         <h5
           class="card-header d-flex justify-content-between align-items-center"
         >
-          <span>Work Experience</span>
+          <span>Bank Details</span>
           <button
             type="button"
             class="btn btn-md btn-primary float-end"
@@ -15,44 +15,70 @@
           </button>
         </h5>
         <!-- <hr style="margin: 0rem 0 !important" /> -->
-        <div class="card-body mt-5">
+        <div class="card-body mt-2">
           <div class="row g-2">
             <div class="col-6">
               <label for="defaultFormControlInput" class="form-label"
-                >Previous Company Name</label
+                >Account Holder Name</label
               >
               <input
                 type="text"
                 class="form-control"
                 id="defaultFormControlInput"
                 placeholder="Enter company Name"
-                [(ngModel)]="obj['companyName']"
+                [(ngModel)]="obj['accountHolderName']"
                 aria-describedby="defaultFormControlHelp"
               />
             </div>
              <div class="col-6">
               <label for="defaultFormControlInput" class="form-label"
-                >From</label
+                >Bank Name</label
               >
               <input
-                type="date"
+                type="text"
                 class="form-control"
                 id="defaultFormControlInput"
-                placeholder="Enter company Name"
-                [(ngModel)]="obj['from']"
+                placeholder="Enter Bank Name"
+                [(ngModel)]="obj['bankName']"
                 aria-describedby="defaultFormControlHelp"
               />
             </div>
              <div class="col-6">
               <label for="defaultFormControlInput" class="form-label"
-                >To</label
+                >Branch Name</label
               >
               <input
-                type="date"
+                type="text"
                 class="form-control"
                 id="defaultFormControlInput"
-                placeholder="Enter company Name"
-                [(ngModel)]="obj['to']"
+                placeholder="Enter Branch Name"
+                [(ngModel)]="obj['bankBranch']"
+                aria-describedby="defaultFormControlHelp"
+              />
+            </div>
+               <div class="col-6">
+              <label for="defaultFormControlInput" class="form-label"
+                >accountNumber</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="defaultFormControlInput"
+                placeholder="Enter Account Number"
+                [(ngModel)]="obj['accountNumber']"
+                aria-describedby="defaultFormControlHelp"
+              />
+            </div>
+             <div class="col-6">
+              <label for="defaultFormControlInput" class="form-label"
+                >IFSC Code </label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="defaultFormControlInput"
+                placeholder="Enter IFSC Code "
+                [(ngModel)]="obj['ifscCode']"
                 aria-describedby="defaultFormControlHelp"
               />
             </div>
@@ -72,30 +98,6 @@
                 id="select2Danger"
               >
               </ng-select>
-            </div>
-             <div class="col-6">
-              <label for="defaultFormControlInput" class="form-label"
-                >Designation</label
-              >
-             <textarea
-                class="form-control"
-                rows="4"
-                placeholder="Enter designation"
-                [(ngModel)]="obj.designation"
-                name="address"
-              ></textarea>
-            </div>
-              <div class="col-12">
-              <label for="defaultFormControlInput" class="form-label"
-                >Description</label
-              >
-             <textarea
-                class="form-control"
-                rows="4"
-                placeholder="Enter Description"
-                [(ngModel)]="obj.description"
-                name="address"
-              ></textarea>
             </div>
           </div>
           <div class="row">
@@ -128,7 +130,7 @@
         <h5
           class="card-header d-flex justify-content-between align-items-center"
         >
-          <span>Work Experience List</span>
+          <span>Bank Details List</span>
           <button
             *ngIf="createFlag == false"
             type="button"
@@ -143,10 +145,11 @@
             <thead>
               <tr>
                 <th>SI.No</th>
-                <th>Company Name </th>
-                <th>Designation</th>
-                <th>From</th>
-                <th>To</th>
+                <th>Account Holder Name</th>
+                <th>Account Number</th>
+                <th>Bank Name</th>
+                <th>Branch Name</th>
+                <th>IFSC Code</th>
                 <!-- <th>Status</th> -->
                 <th>createdAt</th>
                 <th>Actions</th>
@@ -155,15 +158,18 @@
             <tbody class="table-border-bottom-0">
               <tr *ngFor="let item of desigantionList; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
-                <td>{{ item["companyName"] }}</td>
+                <td>{{ item["accountHolderName"] }}</td>
                 <td>
-                  {{ item["designation"] }}
+                  {{ item["accountNumber"] }}
                 </td>
                  <td>
-                  {{ item["from"] |date:'dd-M-YYYY' }}
+                  {{ item["bankName"] }}
                 </td>
                  <td>
-                  {{ item["to"]  |date:'dd-M-YYYY' }}
+                  {{ item["bankBranch"] }}
+                </td>
+                 <td>
+                  {{ item["ifscCode"] }}
                 </td>
                 <!-- <td>
                   <span

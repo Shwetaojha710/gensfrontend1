@@ -51,10 +51,6 @@ export class DocumentTypeComponent {
   }
 
   async ngOnInit() {
-    this.DocumentForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['']
-    });
 
     await this.fetchDocument();
   }
@@ -69,7 +65,7 @@ export class DocumentTypeComponent {
 
   async fetchDocument() {
     this.DocumentList = []
-    this.master.getDocument().subscribe(data => {
+    this.master.getDocumentType().subscribe(data => {
       if (data['status'] == true) {
         this.notyf.success(data['message']);
         this.DocumentList = data.data;
@@ -82,12 +78,12 @@ export class DocumentTypeComponent {
   }
 
   onSubmit() {
-    if (!ValidationUtil.showRequiredError('Document Type', this.obj.name, this.notyf)) {
+    if (!ValidationUtil.showRequiredError('Document Type', this.obj.type, this.notyf)) {
       return;
     }
 
 
-    this.master.addDocument(this.obj).subscribe({
+    this.master.addDocumenttype(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
 
@@ -97,7 +93,7 @@ export class DocumentTypeComponent {
         console.log("response", response);
 
         if (status === true) {
-
+this.obj={}
           this.notyf.success(message)
           this.fetchDocument();
           this.resetForm();
@@ -126,7 +122,7 @@ export class DocumentTypeComponent {
     this.updateFlag = true
   }
   updatedata() {
-    this.master.updateDocument(this.editingId, this.obj).subscribe({
+    this.master.updateDocumentType(this.editingId, this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -190,7 +186,7 @@ export class DocumentTypeComponent {
 
   }
   deleteDocument(data:any){
-       this.master.deleteDocument(data).subscribe({
+       this.master.deleteDocumentType(data).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';

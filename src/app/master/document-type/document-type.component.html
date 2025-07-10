@@ -5,7 +5,7 @@
         <h5
           class="card-header d-flex justify-content-between align-items-center"
         >
-          <span>Employment</span>
+          <span>Document Type</span>
           <button
             type="button"
             class="btn btn-md btn-primary float-end"
@@ -26,13 +26,13 @@
                 type="text"
                 class="form-control"
                 id="defaultFormControlInput"
-                placeholder="Enter Employment Name"
-                [(ngModel)]="obj['name']"
+                placeholder="Enter Document Type"
+                [(ngModel)]="obj['type']"
                 aria-describedby="defaultFormControlHelp"
                 required
               />
 
-              <div class="invalid-feedback">Enter a valid email address.</div>
+
             </div>
             &nbsp;
                <div class="col-4" *ngIf="updateFlag">
@@ -97,7 +97,7 @@
             <thead>
               <tr>
                 <th>SI.No</th>
-                <th>Name</th>
+                <th>Type</th>
                 <th>Status</th>
                 <th>createdAt</th>
                 <th>Actions</th>
@@ -106,7 +106,7 @@
             <tbody class="table-border-bottom-0">
               <tr *ngFor="let item of DocumentList; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
-                <td>{{ item["name"] }}</td>
+                <td>{{ item["type"] }}</td>
                 <td>
                   <span
                     class="badge rounded overflow-hidden px-2"

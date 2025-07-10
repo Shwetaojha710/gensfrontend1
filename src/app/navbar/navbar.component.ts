@@ -82,11 +82,11 @@ menuItems: MenuItem[] = [
         icon: 'ri-money-dollar-circle-line',
         link: '/layout/employee/profile/salary'
       },
-      {
-        title: 'Documents',
-        icon: 'ri-file-line',
-        link: '/layout/employee/profile/documents'
-      }
+      // {
+      //   title: 'Documents',
+      //   icon: 'ri-file-line',
+      //   link: '/layout/employee/profile/documents'
+      // }
     ]
   },
   {
@@ -123,7 +123,9 @@ menuItems: MenuItem[] = [
     children: [
       { title: 'Designation Master', icon: 'ri-team-line', link: '/layout/master/designation' },
       { title: 'Department Master', icon: 'ri-building-4-line', link: '/layout/master/department' },
-      { title: 'Employment Type', icon: 'ri-briefcase-4-line', link: '/layout/master/employment-type' }
+      { title: 'Employment Type', icon: 'ri-briefcase-4-line', link: '/layout/master/employment-type' },
+      {title: 'Documents', icon: 'ri-file-line', link: '/layout/master/documents'}
+
     ]
   }
 ];

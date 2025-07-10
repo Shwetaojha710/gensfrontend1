@@ -35,6 +35,7 @@ import { PayrollComponent } from './reports/payroll/payroll.component';
 import { AttendanceComponent } from './reports/attendance/attendance.component';
 import { LayoutComponent } from './layout/layout.component';
 import { JoiningComponent } from './employee/joining/joining.component';
+import { DocumentTypeComponent } from './master/document-type/document-type.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -80,7 +81,8 @@ export const routes: Routes = [
         children: [
           { path: 'department', component: DepartmentComponent },
           { path: 'designation', component: DesignationComponent },
-          { path: 'employment-type', component: EmploymentTypeComponent }
+          { path: 'employment-type', component: EmploymentTypeComponent },
+          { path: 'documents', component: DocumentTypeComponent }
         ]
       },
       {

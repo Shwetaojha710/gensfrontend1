@@ -89,8 +89,15 @@ export class MasterService {
 
 
 
-  getDocument(): Observable<any> {
-    return this.http.post(`${this.baseUrl}getDocument`, {});
+  getDocument(obj:any): Observable<any> {
+    return this.http.post(`${this.baseUrl}getDocument`, obj);
+  }
+  getDocumentType(): Observable<any> {
+    return this.http.post(`${this.baseUrl}getDocumentType`, {});
+  }
+
+  addDocumenttype(dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}createDocumentType`, dept);
   }
 
   addDocument(dept: any): Observable<any> {
@@ -100,9 +107,15 @@ export class MasterService {
   updateDocument(id: any, dept: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}editDocument`, dept);
   }
+  updateDocumentType(id: any, dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}updateDocumentType`, dept);
+  }
 
   deleteDocument(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}deleteDocument`, data);
+  }
+  deleteDocumentType(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}deleteDocumentType`, data);
   }
 
    getDocumentDD(): Observable<any> {

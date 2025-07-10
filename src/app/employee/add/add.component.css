@@ -72,3 +72,33 @@ a {
     margin-bottom: 0;
     list-style: none;
 } */
+
+hr {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+user agent stylesheet
+hr {
+    display: block;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    unicode-bidi: isolate;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+}

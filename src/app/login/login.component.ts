@@ -51,6 +51,7 @@ export class LoginComponent {
         console.log(data,"ss")
         if (data.status === true) {
           localStorage.setItem('token', data.data.token);
+           localStorage.setItem("base_url", data.data.baseUrl);
           this.notyf.success(data.message);
           this.router.navigate(['layout']);
         } else {

@@ -36,10 +36,58 @@ baseUrl=environment.apiUrl
   }
 
   updateEmp(data: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}updateEmp`, data);
+    return this.http.post(`${this.baseUrl}updateEmp`, data);
   }
 
+  uploadImage(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}uploadImage`, data);
+  }
+getUploadImage(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}getUploadImage`, data);
+  }
   deleteEmp(id: string): Observable<any> {
     return this.http.post(`${this.baseUrl}deleteEmp`,id);
   }
+
+
+
+   addexperience(dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}createWorkExp`, dept);
+  }
+
+  updateexperience(id: any, dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}updateWorkExp`, dept);
+  }
+
+
+  deleteexperience(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}deleteWorkExp`, data);
+  }
+
+
+   getexperiences(obj:any): Observable<any> {
+    return this.http.post(`${this.baseUrl}getWorkExp`, obj);
+  }
+
+
+addBank(dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}createBank`, dept);
+  }
+
+  updateBank(id: any, dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}updateBank`, dept);
+  }
+
+
+  deleteBank(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}deleteBank`, data);
+  }
+
+
+   getBanks(obj:any): Observable<any> {
+    return this.http.post(`${this.baseUrl}getBank`, obj);
+  }
+
+
+
 }
