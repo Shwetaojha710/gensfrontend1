@@ -50,9 +50,14 @@ export const routes: Routes = [
         children: [
           { path: 'list', component: ListComponent },
           { path: 'joining', component: JoiningComponent },
-          { path: 'add', component: AddComponent },
+          { path: 'add', component: AddComponent,
+             children:[
+              { path: 'profile/qualification', component: QualificationComponent },
+             ]
+
+           },
           { path: 'profile/personal', component: PersonalDetailsComponent },
-          { path: 'profile/qualification', component: QualificationComponent },
+
           { path: 'profile/experience', component: ExperienceComponent },
           { path: 'profile/skills', component: SkillsComponent },
           { path: 'profile/salary', component: SalaryStructureComponent },

@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  baseurl = 'http://192.168.23.11:3001/api/';
+  baseurl =environment.apiUrl;
   loginUser(object: any): Observable<any> {
     return this.http.post(`${this.baseurl}login`, object, {
       withCredentials: true,

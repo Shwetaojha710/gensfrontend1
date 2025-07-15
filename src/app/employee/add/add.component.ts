@@ -13,28 +13,28 @@ import Swal from 'sweetalert2';
 import { MasterService } from '../../services/master.service';
 import { Notyf } from 'notyf';
 import * as bootstrap from 'bootstrap';
+import { BasicComponent } from "../../payroll/basic/basic.component";
+import { AllowancesComponent } from "../../payroll/allowances/allowances.component";
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent,ExperienceComponent,BankDetailsComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent, ExperienceComponent, BankDetailsComponent, BasicComponent, AllowancesComponent],
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css']
 })
 export class AddComponent {
-    notyf: Notyf;
-personalDetails:any={}
-  constructor(
-      private Documentervice: MasterService,
-        private router: Router,
-    private employeeService: EmployeeService,public dataService: DataService,public statusService:StatusService) {
-       this.countrydd();
-      this.dataService.currentMessage.subscribe(msg => {
-  this.personalDetails = msg || {};
-  console.log(this.personalDetails);
-});
+  notyf: Notyf;
+  personalDetails: any = {}
+  constructor(private Documentervice: MasterService,
+    private router: Router,
+    private employeeService: EmployeeService, public dataService: DataService, public statusService: StatusService) {
+    this.countrydd();
+    this.dataService.currentMessage.subscribe(msg => {
+      this.personalDetails = msg || {};
+    });
     this.notyf = new Notyf();
-   }
- maritalStatusList = [
+  }
+  maritalStatusList = [
     { value: 'Single', label: 'Single' },
     { value: 'Married', label: 'Married' },
     { value: 'Divorced', label: 'Divorced' },
@@ -46,12 +46,12 @@ personalDetails:any={}
     { value: 'Female', label: 'Female' },
     { value: 'Other', label: 'Other' }
   ]
-    baseurl: any;
- async ngOnInit() {
+  baseurl: any;
+  async ngOnInit() {
     this.baseurl = localStorage.getItem('base_url')?.replace(/["\\,]/g, '') || '';
     await this.fetchDocument()
   }
-   countryList: any = [];
+  countryList: any = [];
   employmentTypes: any[] = [];
   async countrydd() {
     this.countryList = [];
@@ -68,7 +68,7 @@ personalDetails:any={}
       }
     });
   }
-cities:any=[]
+  cities: any = []
   async getcity(stateId: any) {
     this.cities = [];
     let obj: any = {}
@@ -81,11 +81,11 @@ cities:any=[]
       });
     }
   }
-   states: any[] = [];
+  states: any[] = [];
   async getstates(countryId: any) {
     this.states = []
     let obj: any = {}
-    obj['id'] = countryId.value|| countryId;
+    obj['id'] = countryId.value || countryId;
 
     this.employeeService.getStates(obj).subscribe(data => {
       this.states = data.data || [];
@@ -94,11 +94,11 @@ cities:any=[]
 
     );
   }
-  toUppercase(){
+  toUppercase() {
 
   }
-  addPhoto(){
- const uploadData = new FormData();
+  addPhoto() {
+    const uploadData = new FormData();
     uploadData.append('id', this.personalDetails.id)
     if (this.selectedFile) {
       uploadData.append('profileImage', this.selectedFile, this.selectedFile.name);
@@ -147,47 +147,135 @@ cities:any=[]
     });
 
   }
-   isFileInvalid: boolean = false;
+  isFileInvalid: boolean = false;
   selectedFile: File | null = null;
 
-onFileChange(event: any): void {
-  const file: File = event.target.files[0];
+  // onFileChange(event: any): void {
+  //   const file: File = event.target.files[0];
 
-  if (!file) {
-    this.selectedFile = null;
-    return;
+  //   if (!file) {
+  //     this.selectedFile = null;
+  //     return;
+  //   }
+
+  //   const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+  //   const maxSize = 2 * 1024 * 1024; // 2MB
+
+  //   if (!allowedTypes.includes(file.type)) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Invalid File Type',
+  //       text: 'Only JPG, JPEG, and PNG formats are allowed.',
+  //     });
+  //     event.target.value = ''; // Clear the file input
+  //     this.selectedFile = null;
+  //     return;
+  //   }
+
+  //   if (file.size > maxSize) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'File Too Large',
+  //       text: 'Maximum allowed file size is 2MB.',
+  //     });
+  //     event.target.value = ''; // Clear the file input
+  //     this.selectedFile = null;
+  //     return;
+  //   }
+
+  //   this.selectedFile = file;
+  // }
+
+  onFileChange(event: any) {
+  const file = event.target.files[0];
+
+  if (file && file.type.startsWith('image/')) {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      img.src = e.target.result;
+
+      img.onload = async () => {
+        const originalWidth = img.width;
+        const originalHeight = img.height;
+
+        const minWidth = 100;
+        const minHeight = 100;
+        const maxWidth = 1000;
+        const maxHeight = 1000;
+
+        if (
+          originalWidth < minWidth ||
+          originalHeight < minHeight ||
+          originalWidth > maxWidth ||
+          originalHeight > maxHeight
+        ) {
+          this.notyf.error(
+            `Image dimensions should be between ${minWidth}x${minHeight} and ${maxWidth}x${maxHeight}px.`
+          );
+          event.target.value = '';
+          return;
+        }
+
+        // Resize and compress to target dimensions
+        const targetWidth = 200;
+        const targetHeight = 200;
+        const quality = 0.6; // 60% quality
+
+        const compressedFile = await this.resizeAndCompressImage(
+          img,
+          targetWidth,
+          targetHeight,
+          quality
+        );
+
+        console.log('Compressed file:', compressedFile);
+
+        // You can patch to a form or upload:
+        // this.form.patchValue({ profileImage: compressedFile });
+      };
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    this.notyf.error('Only image files are allowed.');
   }
-
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-  const maxSize = 2 * 1024 * 1024; // 2MB
-
-  if (!allowedTypes.includes(file.type)) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Invalid File Type',
-      text: 'Only JPG, JPEG, and PNG formats are allowed.',
-    });
-    event.target.value = ''; // Clear the file input
-    this.selectedFile = null;
-    return;
-  }
-
-  if (file.size > maxSize) {
-    Swal.fire({
-      icon: 'error',
-      title: 'File Too Large',
-      text: 'Maximum allowed file size is 2MB.',
-    });
-    event.target.value = ''; // Clear the file input
-    this.selectedFile = null;
-    return;
-  }
-
-  this.selectedFile = file;
 }
 
-  DocumentList:any
-   async fetchDocument() {
+resizeAndCompressImage(
+  img: HTMLImageElement,
+  targetWidth: number,
+  targetHeight: number,
+  quality: number
+): Promise<File> {
+  return new Promise((resolve) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    const ctx = canvas.getContext('2d')!;
+    ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          const compressedFile = new File([blob], 'resized-image.jpg', {
+            type: 'image/jpeg',
+            lastModified: Date.now(),
+          });
+          resolve(compressedFile);
+        }
+      },
+      'image/jpeg',
+      quality
+    );
+  });
+}
+
+
+  DocumentList: any
+  async fetchDocument() {
     this.DocumentList = []
     let obj: any = {}
     obj['id'] = this.personalDetails.id
@@ -196,9 +284,9 @@ onFileChange(event: any): void {
       if (data['status'] == true) {
         this.notyf.success(data['message']);
         this.DocumentList = data.data;
-         console.log( this.DocumentList);
+        console.log(this.DocumentList);
 
-          this.DocumentList = `${this.baseurl}/${this.DocumentList}`
+        this.DocumentList = `${this.baseurl}/${this.DocumentList}`
 
       } else {
         this.notyf.error(data['message']);
@@ -206,10 +294,13 @@ onFileChange(event: any): void {
     });
 
 
-}
- openModal() {
+  }
+  openModal() {
     const modalElement = document.getElementById('imageModal');
     const modal = new bootstrap.Modal(modalElement!);
     modal.show();
+  }
+  back(){
+       this.router.navigate(["/layout/employee/joining"]);
   }
 }

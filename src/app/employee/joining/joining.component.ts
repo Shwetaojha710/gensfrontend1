@@ -290,4 +290,20 @@ console.log(data,"objectsss")
 this.router.navigate(['/layout/employee/add']);
 }
 
+onAadhaarInput(event: any, separator: 'space' | 'dash' = 'space'): void {
+  let input = event.target.value.replace(/\D/g, '').substring(0, 12); // only digits, max 12
+  let formatted = '';
+
+  // Choose separator: space or dash
+  const sep = separator === 'dash' ? '-' : ' ';
+
+  for (let i = 0; i < input.length; i += 4) {
+    if (i > 0) formatted += sep;
+    formatted += input.substr(i, 4);
+  }
+
+  // this.formattedAadhaar = formatted;
+  this.personalDetails.adhaarNo = formatted; // store raw 12-digit Aadhaar number
+}
+
 }

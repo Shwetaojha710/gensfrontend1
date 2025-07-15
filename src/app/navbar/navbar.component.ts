@@ -63,7 +63,7 @@ menuItems: MenuItem[] = [
           {
             title: 'Qualification',
             icon: 'ri-award-line',
-            link: '/layout/employee/profile/qualification'
+            link: '/layout/employee/add/profile/qualification'
           },
           {
             title: 'Experience',

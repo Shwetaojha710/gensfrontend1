@@ -1,145 +1,142 @@
-<div class="container mt-5">
+<div class="mt-5">
   <div class="row mb-6" *ngIf="createFlag">
     <div class="col-md">
       <!-- <div class="card"> -->
-        <h5
-          class="card-header d-flex justify-content-between align-items-center"
+      <h5 class="card-header d-flex justify-content-between align-items-center">
+        <span>Bank Details</span>
+        <button
+          type="button"
+          class="btn btn-xs btn-primary float-end"
+          (click)="back()"
         >
-          <span>Bank Details</span>
-          <button
-            type="button"
-            class="btn btn-md btn-primary float-end"
-            (click)="back()"
-          >
-            <i class="fa-solid fa-arrow-left"></i>&nbsp;Back
-          </button>
-        </h5>
-        <!-- <hr style="margin: 0rem 0 !important" /> -->
-        <div class="card-body mt-2">
-          <div class="row g-2">
-            <div class="col-6">
-              <label for="defaultFormControlInput" class="form-label"
-                >Account Holder Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter company Name"
-                [(ngModel)]="obj['accountHolderName']"
-                aria-describedby="defaultFormControlHelp"
-              />
-            </div>
-             <div class="col-6">
-              <label for="defaultFormControlInput" class="form-label"
-                >Bank Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Bank Name"
-                [(ngModel)]="obj['bankName']"
-                aria-describedby="defaultFormControlHelp"
-              />
-            </div>
-             <div class="col-6">
-              <label for="defaultFormControlInput" class="form-label"
-                >Branch Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Branch Name"
-                [(ngModel)]="obj['bankBranch']"
-                aria-describedby="defaultFormControlHelp"
-              />
-            </div>
-               <div class="col-6">
-              <label for="defaultFormControlInput" class="form-label"
-                >accountNumber</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Account Number"
-                [(ngModel)]="obj['accountNumber']"
-                aria-describedby="defaultFormControlHelp"
-              />
-            </div>
-             <div class="col-6">
-              <label for="defaultFormControlInput" class="form-label"
-                >IFSC Code </label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter IFSC Code "
-                [(ngModel)]="obj['ifscCode']"
-                aria-describedby="defaultFormControlHelp"
-              />
-            </div>
-
-            <div class="col-6" *ngIf="updateFlag">
-              <label for="defaultFormControlInput" class="form-label"
-                >Status</label
-              >
-              <ng-select
-                [items]="status"
-                bindLabel="label"
-                bindValue="value"
-                [(ngModel)]="obj['status']"
-                [multiple]="false"
-                placeholder="Select Status"
-                name="status"
-                id="select2Danger"
-              >
-              </ng-select>
-            </div>
+          <i class="fa-solid fa-arrow-left"></i>&nbsp;Back
+        </button>
+      </h5>
+      <!-- <hr style="margin: 0rem 0 !important" /> -->
+      <div class="card-body mt-2">
+        <div class="row g-2">
+          <div class="col-6">
+            <label for="defaultFormControlInput" class="form-label"
+              >Account Holder Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="defaultFormControlInput"
+              placeholder="Enter company Name"
+              [(ngModel)]="obj['accountHolderName']"
+              aria-describedby="defaultFormControlHelp"
+            />
           </div>
-          <div class="row">
-            <div class="col-md-12 mt-2">
-              <button
-                *ngIf="createFlag && updateFlag == false"
-                type="button"
-                class="btn btn-sm btn-primary waves-effect waves-light"
-                (click)="onSubmit()"
-              >
-                Submit
-              </button>
-              <button
-                *ngIf="updateFlag == true"
-                type="button"
-                class="btn btn-sm btn-primary waves-effect waves-light"
-                (click)="updatedata()"
-              >
-                Update
-              </button>
-            </div>
+          <div class="col-6">
+            <label for="defaultFormControlInput" class="form-label"
+              >Bank Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="defaultFormControlInput"
+              placeholder="Enter Bank Name"
+              [(ngModel)]="obj['bankName']"
+              aria-describedby="defaultFormControlHelp"
+            />
+          </div>
+          <div class="col-6">
+            <label for="defaultFormControlInput" class="form-label"
+              >Branch Name</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="defaultFormControlInput"
+              placeholder="Enter Branch Name"
+              [(ngModel)]="obj['bankBranch']"
+              aria-describedby="defaultFormControlHelp"
+            />
+          </div>
+          <div class="col-6">
+            <label for="defaultFormControlInput" class="form-label"
+              >accountNumber</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="defaultFormControlInput"
+              placeholder="Enter Account Number"
+              [(ngModel)]="obj['accountNumber']"
+              aria-describedby="defaultFormControlHelp"
+            />
+          </div>
+          <div class="col-6">
+            <label for="defaultFormControlInput" class="form-label"
+              >IFSC Code
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="defaultFormControlInput"
+              placeholder="Enter IFSC Code "
+              [(ngModel)]="obj['ifscCode']"
+              aria-describedby="defaultFormControlHelp"
+            />
+          </div>
+
+          <div class="col-6" *ngIf="updateFlag">
+            <label for="defaultFormControlInput" class="form-label"
+              >Status</label
+            >
+            <ng-select
+              [items]="status"
+              bindLabel="label"
+              bindValue="value"
+              [(ngModel)]="obj['status']"
+              [multiple]="false"
+              placeholder="Select Status"
+              name="status"
+              id="select2Danger"
+            >
+            </ng-select>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12 mt-2">
+            <button
+              *ngIf="createFlag && updateFlag == false"
+              type="button"
+              class="btn btn-sm btn-primary waves-effect waves-light"
+              (click)="onSubmit()"
+            >
+              Submit
+            </button>
+            <button
+              *ngIf="updateFlag == true"
+              type="button"
+              class="btn btn-sm btn-primary waves-effect waves-light"
+              (click)="updatedata()"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
       <!-- </div> -->
     </div>
   </div>
   <div class="row mb-6">
     <div class="col-md">
       <!-- <div class="card"> -->
-        <h5
-          class="card-header d-flex justify-content-between align-items-center"
+      <h5 class="card-header d-flex justify-content-between align-items-center">
+        <span>Bank Details List</span>
+        <button
+          *ngIf="createFlag == false"
+          type="button"
+          class="btn btn-xs btn-primary float-end"
+          (click)="opencreate()"
         >
-          <span>Bank Details List</span>
-          <button
-            *ngIf="createFlag == false"
-            type="button"
-            class="btn btn-md btn-primary float-end"
-            (click)="opencreate()"
-          >
-            <i class="fa-solid fa-plus"></i>&nbsp;Add
-          </button>
-        </h5>
+          <i class="fa-solid fa-plus"></i>&nbsp;Add
+        </button>
+      </h5>
+      <div class="card-body">
         <div class="table-responsive text-nowrap mt-2">
           <table class="table table-hover">
             <thead>
@@ -162,13 +159,13 @@
                 <td>
                   {{ item["accountNumber"] }}
                 </td>
-                 <td>
+                <td>
                   {{ item["bankName"] }}
                 </td>
-                 <td>
+                <td>
                   {{ item["bankBranch"] }}
                 </td>
-                 <td>
+                <td>
                   {{ item["ifscCode"] }}
                 </td>
                 <!-- <td>
@@ -202,6 +199,7 @@
             </tbody>
           </table>
         </div>
+      </div>
       <!-- </div> -->
     </div>
   </div>
