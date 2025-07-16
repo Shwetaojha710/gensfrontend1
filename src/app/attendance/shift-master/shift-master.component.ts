@@ -19,6 +19,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 export class ShiftMasterComponent {
   obj: any = {}
   notyf: Notyf;
+  weekArr: any = [{ day_of_week: 'Sunday', startTime: '', endTime: '' }, {  day_of_week: 'Monday', startTime: '', endTime: '' }, {  day_of_week: 'Tuesday', startTime: '', endTime: '' }, { day_of_week: 'Wednesday', startTime: '', endTime: '' }, { day_of_week: 'Thursday', startTime: '', endTime: '' }, { day_of_week: 'Friday', startTime: '', endTime: '' }, { day_of_week: 'Saturday', startTime: '', endTime: '' }]
 
   back() {
     this.obj = {}
@@ -31,7 +32,7 @@ export class ShiftMasterComponent {
   //    console.log(this.obj)
   // }
   departmentForm!: FormGroup;
-  shiftList = [];
+  shiftList:any = [];
   editingId: number | null = null;
 
   constructor(
@@ -61,6 +62,8 @@ export class ShiftMasterComponent {
       case 'pending': return 'bg-light-warning';
       case 'cancelled': return 'bg-light-danger';
       case 'completed': return 'bg-light-success';
+      case 'Working' : return 'bg-light-danger';
+      case 'Week Off' : return 'bg-light-success';
       default: return 'bg-light-secondary';
     }
   }
@@ -72,6 +75,18 @@ export class ShiftMasterComponent {
         this.shiftList = []
         this.notyf.success(data['message']);
         this.shiftList = data.data;
+      this.shiftList = this.shiftList.map((item: any) => {
+  return {
+    ...item,
+    shifts: item.shifts.map((shiftItem: any) => {
+      return {
+        ...shiftItem,
+        is_week_off: shiftItem.is_week_off === false ? 'Working' : 'Week Off',
+      };
+    }),
+  };
+});
+
       } else {
         this.notyf.error(data['message']);
       }
@@ -85,15 +100,24 @@ export class ShiftMasterComponent {
       return;
     }
 
-    if (!ValidationUtil.showRequiredError('Start Time', this.obj.startTime, this.notyf)) {
-      return;
-    }
+    // if (!ValidationUtil.showRequiredError('Start Time', this.obj.startTime, this.notyf)) {
+    //   return;
+    // }
 
-    if (!ValidationUtil.showRequiredError('End Time', this.obj.endTime, this.notyf)) {
-      return;
-    }
+    // if (!ValidationUtil.showRequiredError('End Time', this.obj.endTime, this.notyf)) {
+    //   return;
+    // }
 
-    this.shiftService.createShift(this.obj).subscribe({
+    this.weekArr=this.weekArr.map((item:any)=>{
+      return{
+
+        day_of_week:item.day_of_week,
+        startTime:item.startTime,
+        endTime:item.endTime,
+        shift:this.obj['shift'],
+      }
+    })
+    this.shiftService.createShift(this.weekArr).subscribe({
       next: (response: any) => {
         console.log('response', response);
 
@@ -141,17 +165,33 @@ export class ShiftMasterComponent {
   }
   update(dept: any) {
     this.obj = Object.assign({}, dept)
+    this.weekArr=dept.shifts
+    console.log(this.obj)
     this.editingId = this.obj.id;
-    this.obj.startTime = this.convertTo24Hour(this.obj.startTime); // from "11:49 AM" to "11:49"
-    this.obj.endTime = this.convertTo24Hour(this.obj.endTime);
+    this.weekArr=this.weekArr.map((item:any)=>{
+      return{
+        ...item,
+        startTime:this.convertTo24Hour(item.startTime),
+        endTime:this.convertTo24Hour(item.endTime)
+      }
+    })
+    // this.obj.startTime = this.convertTo24Hour(this.obj.startTime); // from "11:49 AM" to "11:49"
+    // this.obj.endTime = this.convertTo24Hour(this.obj.endTime);
     this.createFlag = true
     this.updateFlag = true
   }
   updatedata() {
-    let newObj: any = {}
-    newObj['startTime'] = this.obj.startTime
-    newObj['endTime'] = this.obj.endTime
-    this.shiftService.updateShift(this.editingId, newObj).subscribe({
+    this.weekArr=this.weekArr.map((item:any)=>{
+      return{
+
+        day_of_week:item.day_of_week,
+        startTime:item.startTime,
+        endTime:item.endTime,
+        shift:this.obj['shift'],
+      }
+    })
+    this.weekArr['id']=this.editingId
+    this.shiftService.updateShift(this.editingId, this.weekArr).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';

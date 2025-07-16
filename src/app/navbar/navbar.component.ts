@@ -34,7 +34,7 @@ menuItems: MenuItem[] = [
   {
     title: 'Dashboards',
     icon: 'ri-home-smile-line',
-    active: true,
+    // active: true,
     link: '/layout'
   },
   {
@@ -42,7 +42,6 @@ menuItems: MenuItem[] = [
     icon: 'ri-layout-2-line',
     children: [
       { title: 'Employee List', icon: 'ri-file-list-2-line', link: '/layout/employee/list' },
-            // { title: 'General Info', icon: 'ri-file-list-2-line', link: '/layout/employee/add' },
 
       { title: 'Add Employee', icon: 'ri-user-add-line', link: '/layout/employee/joining' }
     ]
