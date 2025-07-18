@@ -18,7 +18,7 @@ import { DataService } from '../../services/data.service';
 })
 export class JoiningComponent {
   notyf: Notyf
-  constructor(public dataService:DataService,private employeeService: EmployeeService, private master: MasterService, public statusService: StatusService, private router: Router,) {
+  constructor(public dataService: DataService, private employeeService: EmployeeService, private master: MasterService, public statusService: StatusService, private router: Router,) {
     this.notyf = new Notyf();
   }
   maritalStatusList = [
@@ -77,7 +77,7 @@ export class JoiningComponent {
   async getstates(countryId: any) {
     this.states = []
     let obj: any = {}
-    obj['id'] = countryId.value|| countryId;
+    obj['id'] = countryId.value || countryId;
 
     this.employeeService.getStates(obj).subscribe(data => {
       this.states = data.data || [];
@@ -115,26 +115,29 @@ export class JoiningComponent {
     }
   }
   validateField(value: any, fieldName: string): boolean {
-  if (!value || value.toString().trim() === '') {
-    this.notyf.error(`Please enter a valid ${fieldName}`);
-    return false;
+    if (!value || value.toString().trim() === '') {
+      this.notyf.error(`Please enter a valid ${fieldName}`);
+      return false;
+    }
+    return true;
   }
-  return true;
-}
   personalDetails: any = {}
   submitForm() {
-if (
-  !this.validateField(this.personalDetails.firstName, 'First Name') ||
-  !this.validateField(this.personalDetails.lastName, 'Last Name') ||
-  !this.validateField(this.personalDetails.email, 'Email') ||
-  !this.validateField(this.personalDetails.mobile, 'Mobile Number') ||
-  !this.validateField(this.personalDetails.adhaar, 'Adhaar Number') ||
-  !this.validateField(this.personalDetails.dateOfBirth, 'Date of Birth') ||
-  !this.validateField(this.personalDetails.address, 'Address') ||
-  !this.validateField(this.personalDetails.cities, 'City')
-) {
-  return;
-}
+    if (
+      !this.validateField(this.personalDetails.firstName, 'First Name') ||
+      !this.validateField(this.personalDetails.lastName, 'Last Name') ||
+      !this.validateField(this.personalDetails.email, 'Email') ||
+      !this.validateField(this.personalDetails.mobile, 'Mobile Number') ||
+      !this.validateField(this.personalDetails.adhaar, 'Adhaar Number') ||
+      !this.validateField(this.personalDetails.dateOfBirth, 'Date of Birth') ||
+      !this.validateField(this.personalDetails.currentaddress, 'Current Address') ||
+      !this.validateField(this.personalDetails.permanentAddress, 'Permanent Address') ||
+      !this.validateField(this.personalDetails.cities, 'City'
+
+      )
+    ) {
+      return;
+    }
 
     if (this.personalDetails.mobile.length !== 10) {
       this.notyf.error('Please enter a valid 10 digit mobile number');
@@ -146,8 +149,8 @@ if (
     }
     const dob = new Date(this.personalDetails.dateOfBirth);
     const formattedDob = `${dob.getDate().toString().padStart(2, '0')}/${(dob.getMonth() + 1).toString().padStart(2, '0')}/${dob.getFullYear()}`;;
-    let obj:any ={}
-    obj=this.personalDetails;
+    let obj: any = {}
+    obj = this.personalDetails;
     obj.dateOfBirth = formattedDob;
     this.employeeService.createEmp(obj).subscribe(
       (response) => {
@@ -157,14 +160,14 @@ if (
         console.log(status)
         console.log("response", response);
         if (status === true) {
-          obj={}
+          obj = {}
           this.notyf.success(message)
           this.reset();
           this.loadEmployees()
         } else if (status === "expired") {
-          obj={}
+          obj = {}
           this.notyf.error(message);
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message);
@@ -174,7 +177,8 @@ if (
       },
       (error) => {
         console.error('Error adding employee:', error);
-        alert('Failed to add employee. Please try again.');
+        this.notyf.error(error);
+        // alert('Failed to add employee. Please try again.');
       }
 
     )
@@ -191,12 +195,16 @@ if (
         this.employees = [];
         this.employees = response.data || [];
       } else if (response.status === false) {
-
+          this.notyf.error(response.message)
+      }
+      else if(response.status=='expired'){
+        this.router.navigate(['login'])
       }
     },
       (error: any) => {
         console.error('Error loading employees:', error);
-        alert('Failed to load employees. Please try again.');
+        this.notyf.error(error)
+        // alert('Failed to load employees. Please try again.');
       }
     );
 
@@ -204,22 +212,22 @@ if (
   async update(data: any) {
     this.personalDetails = Object.assign({}, data);
     const dob = new Date(this.personalDetails.dateOfBirth);
-        const formattedDob = `${dob.getFullYear()}-${(dob.getMonth() + 1).toString().padStart(2, '0')}-${dob.getDate().toString().padStart(2, '0')}`;;
+    const formattedDob = `${dob.getFullYear()}-${(dob.getMonth() + 1).toString().padStart(2, '0')}-${dob.getDate().toString().padStart(2, '0')}`;;
     this.personalDetails.dateOfBirth = formattedDob;
-      this.personalDetails.state = Number(this.personalDetails.state);
-        this.personalDetails.city = Number(this.personalDetails.city);
-          this.personalDetails.country =Number(this.personalDetails.country);
-          console.log(this.personalDetails);
-        await  this.getstates(this.personalDetails.country);
-        await  this.getcity(this.personalDetails.state);
-  this.createFlag = true;
-  this.updateFlag = true;
+    this.personalDetails.state = Number(this.personalDetails.state);
+    this.personalDetails.city = Number(this.personalDetails.city);
+    this.personalDetails.country = Number(this.personalDetails.country);
+    console.log(this.personalDetails);
+    await this.getstates(this.personalDetails.country);
+    await this.getcity(this.personalDetails.state);
+    this.createFlag = true;
+    this.updateFlag = true;
   }
-  updateform(){
+  updateform() {
     this.createFlag = false;
     this.listflag = true;
     this.updateFlag = false;
-        this.employeeService.updateEmp(this.personalDetails).subscribe(
+    this.employeeService.updateEmp(this.personalDetails).subscribe(
       (response) => {
 
         let message = response.message ? response.message : 'Data found Successfully';
@@ -232,7 +240,7 @@ if (
           this.loadEmployees()
         } else if (status === "expired") {
           this.notyf.error(message);
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message);
@@ -242,7 +250,7 @@ if (
       },
       (error) => {
         console.error('Error adding employee:', error);
-       this.notyf.error('Failed to add employee. Please try again.');
+        this.notyf.error('Failed to add employee. Please try again.');
       }
 
     )
@@ -258,7 +266,7 @@ if (
         }
         else if (response && response.status === false) {
           this.notyf.error(response.message || 'Failed to delete employee');
-          }
+        }
         else {
           this.notyf.error('Failed to delete employee');
         }
@@ -282,28 +290,34 @@ if (
     this.createFlag = false
   }
   toUppercase() {
-  this.personalDetails.panNo = this.personalDetails.panNo?.toUpperCase() || '';
-}
-view(data:any){
-console.log(data,"objectsss")
+    this.personalDetails.panNo = this.personalDetails.panNo?.toUpperCase() || '';
+  }
+  view(data: any) {
+    console.log(data, "objectsss")
+    // Save object
+    data.state = Number(data.state);
+    data.city = Number(data.city);
+    data.country = Number(data.country);
+    localStorage.setItem('employeeId', JSON.stringify(data));
     this.dataService.changeMessage(data);
-this.router.navigate(['/layout/employee/add']);
-}
 
-onAadhaarInput(event: any, separator: 'space' | 'dash' = 'space'): void {
-  let input = event.target.value.replace(/\D/g, '').substring(0, 12); // only digits, max 12
-  let formatted = '';
-
-  // Choose separator: space or dash
-  const sep = separator === 'dash' ? '-' : ' ';
-
-  for (let i = 0; i < input.length; i += 4) {
-    if (i > 0) formatted += sep;
-    formatted += input.substr(i, 4);
+    this.router.navigate(['/layout/employee/add']);
   }
 
-  // this.formattedAadhaar = formatted;
-  this.personalDetails.adhaarNo = formatted; // store raw 12-digit Aadhaar number
-}
+  onAadhaarInput(event: any, separator: 'space' | 'dash' = 'space'): void {
+    let input = event.target.value.replace(/\D/g, '').substring(0, 12); // only digits, max 12
+    let formatted = '';
+
+    // Choose separator: space or dash
+    const sep = separator === 'dash' ? '-' : ' ';
+
+    for (let i = 0; i < input.length; i += 4) {
+      if (i > 0) formatted += sep;
+      formatted += input.substr(i, 4);
+    }
+
+    // this.formattedAadhaar = formatted;
+    this.personalDetails.adhaarNo = formatted; // store raw 12-digit Aadhaar number
+  }
 
 }

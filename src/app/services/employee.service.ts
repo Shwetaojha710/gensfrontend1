@@ -87,6 +87,9 @@ addBank(dept: any): Observable<any> {
    getBanks(obj:any): Observable<any> {
     return this.http.post(`${this.baseUrl}getBank`, obj);
   }
+   getcomponent(obj:any): Observable<any> {
+    return this.http.post(`${this.baseUrl}getBasicSalaryEmployee`, obj);
+  }
 
 
 

@@ -133,7 +133,7 @@ export class ShiftMasterComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -204,7 +204,7 @@ export class ShiftMasterComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -267,7 +267,7 @@ export class ShiftMasterComponent {
           this.fetchshifts(); ``
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

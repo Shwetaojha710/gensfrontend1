@@ -49,7 +49,7 @@ export class DesignationComponent {
           this.back()
         }
         else if (response.status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -95,7 +95,7 @@ export class DesignationComponent {
           this.back()
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -168,7 +168,7 @@ export class DesignationComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -238,7 +238,7 @@ export class DesignationComponent {
           this.fetchdesignation();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

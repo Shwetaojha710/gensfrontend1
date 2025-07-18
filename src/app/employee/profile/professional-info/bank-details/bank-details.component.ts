@@ -24,10 +24,8 @@ export class BankDetailsComponent {
   personalDetails:any=[]
   constructor(public empService: EmployeeService, private router: Router, public statusService: StatusService,public dataService:DataService) {
     this.notyf = new Notyf();
-     this.dataService.currentMessage.subscribe(msg => {
-  this.personalDetails = msg || {};
-  console.log(this.personalDetails);
-  });
+
+  this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
   }
   departmentDD: any = []
   async ngOnInit() {
@@ -55,7 +53,7 @@ export class BankDetailsComponent {
   //         this.back()
   //       }
   //       else if (response.status === "expired") {
-  //         this.router.navigate(["/login"]);
+  //         this.router.navigate(["login"]);
   //       }
 
   //       else {
@@ -103,7 +101,7 @@ this.obj['accountNumber']=this.obj['accountNumber'].toString()
            this.fetchBank()
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -177,7 +175,7 @@ this.obj['accountNumber']=this.obj['accountNumber'].toString()
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -248,7 +246,7 @@ this.obj['accountNumber']=this.obj['accountNumber'].toString()
           this.fetchBank();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

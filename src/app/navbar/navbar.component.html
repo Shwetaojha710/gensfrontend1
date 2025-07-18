@@ -16,19 +16,15 @@
         <div class="menu-horizontal-wrapper">
           <ul class="menu-inner">
             <ng-container *ngFor="let menu of menuItems">
-              <li class="menu-item" [ngClass]="{ active: menu.active }">
-                <a href="javascript:void(0)" class="menu-link menu-toggle">
+              <li class="menu-item" [ngClass]="{ active: menu.active }" (click)="toggleMenu(menu)">
+                <a href="javascript:void(0)" class="menu-link menu-toggle" [routerLink]="menu.link" routerLinkActive="active">
                   <i class="menu-icon ri" [ngClass]="menu.icon"></i>
-                  <div>{{ menu.title }}</div>
+                  <div>{{ menu.title}}</div>
                 </a>
 
                 <ng-container *ngIf="menu.children && menu.children.length">
                   <ul class="menu-sub">
-                    <ng-container
-                      *ngTemplateOutlet="
-                        renderSubmenu;
-                        context: { $implicit: menu.children }
-                      "
+                    <ng-container *ngTemplateOutlet="renderSubmenu;context: { $implicit: menu.children }"
                     ></ng-container>
                   </ul>
                 </ng-container>

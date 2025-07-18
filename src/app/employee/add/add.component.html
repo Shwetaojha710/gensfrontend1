@@ -62,7 +62,7 @@
         <hr>
         <div class="row mt-2">
           <!-- Navigation -->
-          <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
+          <div class="col-lg-2 col-md-4 col-12 mb-md-0 mb-4">
             <div
               class="d-flex justify-content-between flex-column nav-align-left mb-2 mb-md-0"
             >
@@ -133,7 +133,7 @@
             </div>
           </div>
 
-          <div class="col-lg-9 col-md-8 col-12">
+          <div class="col-lg-10 col-md-8 col-12">
             <div class="tab-content p-0">
               <div
                 class="tab-pane fade show active"
@@ -156,7 +156,7 @@
                   [(ngModel)]="personalDetails.firstName"
                   name="firstName"
                   required
-                  #firstNameRef="ngModel"
+                  #firstNameRef="ngModel" disabled
                 />
                 <small
                   class="text-danger"
@@ -176,6 +176,7 @@
                 name="lastName"
                 required
                 #lastNameRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -196,7 +197,7 @@
                 maxlength="10"
                 required
                 #mobileRef="ngModel"
-
+disabled
               />
 
               <small
@@ -220,7 +221,7 @@
                 maxlength="10"
                 required
                 #alternateMobileRef="ngModel"
-
+disabled
               />
 
               <small
@@ -241,6 +242,7 @@
                 placeholder="Select Gender"
                 name="status"
                 id="select2Danger"
+                disabled
               >
               </ng-select>
             </div>
@@ -255,6 +257,7 @@
                 name="email"
                 required
                 #emailRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -276,7 +279,7 @@
                 pattern="^\d{12}$"
                 required
                 #aadhaarRef="ngModel"
-
+disabled
               />
               <small
                 class="text-danger"
@@ -298,6 +301,7 @@
                 maxlength="10"
                 required
                 #panRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -316,6 +320,7 @@
                 name="bloodGroup"
                 required
                 #bloodGroupRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -334,6 +339,7 @@
                 placeholder="Select Marital Status"
                 name="maritalStatus"
                 id="select2Danger"
+                disabled
               >
               </ng-select>
             </div>
@@ -347,6 +353,7 @@
                 name="fatherName"
                 required
                 #fatherNameRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -365,6 +372,7 @@
                 name="motherName"
                 required
                 #motherNameRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -385,6 +393,7 @@
                 name="nationality"
                 required
                 #nationalityRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -402,6 +411,7 @@
                 name="dateOfBirth"
                 required
                 #dateOfBirthRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -420,6 +430,7 @@
                 name="age"
                 required
                 #ageRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -440,6 +451,7 @@
                 name="country"
                 id="select2Danger"
                 (change)="getstates($event)"
+                disabled
               >
               </ng-select>
             </div>
@@ -455,6 +467,7 @@
                 name="state"
                 id="select2Danger"
                 (change)="getcity($event)"
+                disabled
               >
               </ng-select>
             </div>
@@ -468,6 +481,7 @@
                 name="pinCode"
                 required
                 #pinCodeRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -487,6 +501,7 @@
                 placeholder="Select City"
                 name="city"
                 id="select2Danger"
+                disabled
               >
               </ng-select>
             </div>
@@ -500,6 +515,7 @@
                 placeholder="Enter Permanent Address"
                 [(ngModel)]="personalDetails.permanentAddress"
                 name="address"
+                disabled
               ></textarea>
             </div>
             <div class="col-md-6">
@@ -510,14 +526,15 @@
                 placeholder="Enter Current Address"
                 [(ngModel)]="personalDetails.currentaddress"
                 name="address"
+                disabled
               ></textarea>
             </div>
           </div>
               </div>
               <div class="tab-pane fade" id="delivery" role="tabpanel">
-                <router-outlet></router-outlet>
+                <!-- <router-outlet></router-outlet> -->
 
-                <!-- <app-qualification></app-qualification> -->
+                <app-qualification></app-qualification>
               </div>
               <div class="tab-pane fade" id="cancellation" role="tabpanel">
                 <app-experience></app-experience>
@@ -576,7 +593,7 @@
 
         <hr />
         <div class="row mt-1">
-          <div class="col-lg-3 col-md-4 col-12 mb-md-0 mb-4">
+          <div class="col-lg-2 col-md-4 col-12 mb-md-0 mb-4">
             <div
               class="d-flex justify-content-between flex-column nav-align-left mb-2 mb-md-0"
             >
@@ -610,11 +627,26 @@
                     <span class="align-middle"> Allowance</span>
                   </button>
                 </li>
+                 <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link tab-link waves-effect waves-light"
+                    data-bs-toggle="tab"
+                    data-bs-target="#delivery2"
+                    aria-selected="false"
+                    role="tab"
+                    tabindex="-1"
+                  >
+                    <i
+                      class="icon-base ri ri-shopping-cart-line icon-sm me-2"
+                    ></i>
+                    <span class="align-middle"> Total Salary Component</span>
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
 
-          <div class="col-lg-9 col-md-8 col-12">
+          <div class="col-lg-10 col-md-8 col-12">
             <div class="tab-content p-0">
               <div
                 class="tab-pane fade show active"
@@ -625,6 +657,9 @@
               </div>
               <div class="tab-pane fade" id="delivery1" role="tabpanel">
                 <app-allowances></app-allowances>
+              </div>
+              <div class="tab-pane fade" id="delivery2" role="tabpanel">
+                <app-total-salary-component></app-total-salary-component>
               </div>
             </div>
           </div>

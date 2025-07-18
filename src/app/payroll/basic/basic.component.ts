@@ -26,10 +26,8 @@ export class BasicComponent {
   personalDetails:any=[]
   constructor(public payrollService:PayrollService, private router: Router, public statusService: StatusService,public dataService:DataService) {
     this.notyf = new Notyf();
-     this.dataService.currentMessage.subscribe(msg => {
-  this.personalDetails = msg || {};
-  console.log(this.personalDetails);
-  });
+
+   this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
   }
     type: any = [{ value: 'fixed', label: 'Fixed' }, { value: 'percentage', label: 'Percentage' }]
   departmentDD: any = []
@@ -71,7 +69,7 @@ export class BasicComponent {
           this.back()
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -145,7 +143,7 @@ export class BasicComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -215,7 +213,7 @@ export class BasicComponent {
           this.fetchBasic();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

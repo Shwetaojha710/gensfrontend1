@@ -102,7 +102,7 @@ export class DepartmentComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -138,7 +138,7 @@ export class DepartmentComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -201,7 +201,7 @@ export class DepartmentComponent {
           this.fetchDepartments();``
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

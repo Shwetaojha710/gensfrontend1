@@ -25,19 +25,40 @@ export class AllowancesComponent {
   personalDetails: any = []
   constructor(public empService: EmployeeService, private router: Router, public statusService: StatusService, public dataService: DataService, public payrollService: PayrollService) {
     this.notyf = new Notyf();
-    this.dataService.currentMessage.subscribe(msg => {
-      this.personalDetails = msg || {};
-      console.log(this.personalDetails);
-    });
+
+     this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
   }
   type: any = [{ value: 'fixed', label: 'Fixed' }, { value: 'percentage', label: 'Percentage' }]
   departmentDD: any = []
   async ngOnInit() {
     // await this.experiencedd()
     await this.getallowances()
+    await this.getcomponentname()
 
   }
+ component:any=[]
+ async getcomponentname(){
+  let obj:any ={}
+   this.component=[]
+  obj['employeeId']=this.personalDetails.id
+    this.empService.getcomponent(obj).subscribe((response: any) => {
+      if(response.status==true){
+        this.component=[response.data]
+      }
 
+      })
+  }
+  filledAmount(dependentId:any){
+const matchedItem = this.component.find((item: any) => item.value === dependentId);
+
+if (matchedItem) {
+  this.obj['amount'] = matchedItem.finalAmount;
+}
+
+
+// this.component.fi((item:any)=>item.value == dependentId)
+console.log(this.obj['amount'],"amount valueee")
+  }
 
   back() {
     this.obj = {}
@@ -69,7 +90,7 @@ export class AllowancesComponent {
           this.back()
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -143,7 +164,7 @@ export class AllowancesComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -213,7 +234,7 @@ export class AllowancesComponent {
           this.getallowances();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

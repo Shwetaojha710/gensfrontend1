@@ -16,4 +16,15 @@ export class AuthService {
       responseType: 'text',
     });
   }
+  //   logout(object: any): Observable<any> {
+  //   return this.http.post(`${this.baseurl}logout`, object, {
+  //     withCredentials: true,
+  //     responseType: 'text',
+  //   }
+  // );
+  // }
+    logout(): Observable<any> {
+    return this.http.post(`${this.baseurl}logout`, {});
+  }
+
 }

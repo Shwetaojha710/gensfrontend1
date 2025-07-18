@@ -53,7 +53,7 @@ export class LoginComponent {
           localStorage.setItem('token', data.data.token);
            localStorage.setItem("base_url", data.data.baseUrl);
           this.notyf.success(data.message);
-          this.router.navigate(['layout']);
+          this.router.navigate(['layout/dashboard']);
         } else {
           this.notyf.error(data.message);
         }

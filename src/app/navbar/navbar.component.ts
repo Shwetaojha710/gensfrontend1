@@ -34,8 +34,8 @@ menuItems: MenuItem[] = [
   {
     title: 'Dashboards',
     icon: 'ri-home-smile-line',
-    // active: true,
-    link: '/layout'
+    active: true,
+    link: '/layout/dashboard'
   },
   {
     title: 'Employee Management',
@@ -128,5 +128,19 @@ menuItems: MenuItem[] = [
     ]
   }
 ];
+toggleMenu(menu: any): void {
+  // this.menuItems.forEach(m => {
+  //   if (m !== menu) m.active = false;
+  // });
+  // menu.active = !menu.active;
+  this.menuItems.forEach(m=>{
+    if(m.title === menu.title)
+      {
+m.active = true;
+      } else{
+        m.active = false;
+      }
+  })
+}
 
 }

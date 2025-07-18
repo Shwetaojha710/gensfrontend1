@@ -36,15 +36,17 @@ import { AttendanceComponent } from './reports/attendance/attendance.component';
 import { LayoutComponent } from './layout/layout.component';
 import { JoiningComponent } from './employee/joining/joining.component';
 import { DocumentTypeComponent } from './master/document-type/document-type.component';
+import { TotalSalaryComponentComponent } from './payroll/total-salary-component/total-salary-component.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
+
   {
     path: 'layout',
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
+       { path: 'dashboard', component: DashboardComponent },
       {
         path: 'employee',
         children: [
@@ -78,7 +80,8 @@ export const routes: Routes = [
           { path: 'full-time', component: FullTimeSalaryComponent },
           { path: 'part-time', component: PartTimeSalaryComponent },
           { path: 'allowances', component: AllowancesComponent },
-          { path: 'deductions', component: DeductionsComponent }
+          { path: 'deductions', component: DeductionsComponent },
+          { path: 'total-salary', component: TotalSalaryComponentComponent }
         ]
       },
       {

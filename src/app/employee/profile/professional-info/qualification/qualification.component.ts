@@ -44,10 +44,8 @@ export class QualificationComponent {
     public statusService: StatusService,
     private router: Router, public dataService: DataService
   ) {
-    this.dataService.currentMessage.subscribe(msg => {
-      this.personalDetails = msg || {};
-      console.log(this.personalDetails);
-    });
+
+     this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
     this.notyf = new Notyf();
   }
   baseurl: any;
@@ -136,7 +134,7 @@ export class QualificationComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
@@ -172,7 +170,7 @@ export class QualificationComponent {
           this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)
@@ -235,7 +233,7 @@ export class QualificationComponent {
           this.fetchDocument(); ``
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
         else {
           this.notyf.error(message)

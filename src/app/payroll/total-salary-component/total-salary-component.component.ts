@@ -5,87 +5,77 @@ import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Notyf } from 'notyf';
 import Swal from 'sweetalert2';
-import { StatusService } from '../../../../services/status.service';
-import { ValidationUtil } from '../../../../shared/utils/validation.util';
-import { EmployeeService } from '../../../../services/employee.service';
-import { DataService } from '../../../../services/data.service';
+import { DataService } from '../../services/data.service';
+import { EmployeeService } from '../../services/employee.service';
+import { PayrollService } from '../../services/payroll.service';
+import { StatusService } from '../../services/status.service';
 
 @Component({
-  selector: 'app-experience',
-   imports: [NgSelectModule,
+  selector: 'app-total-salary-component',
+  imports: [NgSelectModule,
     FormsModule, CommonModule],
-  templateUrl: './experience.component.html',
-  styleUrl: './experience.component.css'
+  templateUrl: './total-salary-component.component.html',
+  styleUrl: './total-salary-component.component.css'
 })
 
-export class ExperienceComponent {
+export class TotalSalaryComponentComponent {
   obj: any = {}
   notyf: Notyf;
   desigantionList: any = []
-  personalDetails:any=[]
-  constructor(public empService: EmployeeService, private router: Router, public statusService: StatusService,public dataService:DataService) {
+  personalDetails: any = []
+  constructor(public empService: EmployeeService, private router: Router, public statusService: StatusService, public dataService: DataService, public payrollService: PayrollService) {
     this.notyf = new Notyf();
 
-   this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
+     this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
   }
+  type: any = [{ value: 'fixed', label: 'Fixed' }, { value: 'percentage', label: 'Percentage' }]
   departmentDD: any = []
   async ngOnInit() {
     // await this.experiencedd()
-    await this.fetchexperience()
+    await this.getallowances()
+    await this.getComponentName()
 
   }
-  // async experiencedd() {
-  //   this.departmentDD = []
+ component:any=[]
+ async getComponentName(){
+  let obj:any ={}
+   this.component=[]
+  obj['employeeId']=this.personalDetails.id
+    this.empService.getcomponent(obj).subscribe((response: any) => {
+      if(response.status==true){
+        this.component=[response.data]
+      }
+
+      })
+  }
+  filledAmount(dependentId:any){
+const matchedItem = this.component.find((item: any) => item.value === dependentId);
+
+if (matchedItem) {
+  this.obj['amount'] = matchedItem.finalAmount;
+}
 
 
-  //   this.empService.Departmentsdd().subscribe({
-  //     next: (response: any) => {
-  //       console.log('response', response);
+// this.component.fi((item:any)=>item.value == dependentId)
+console.log(this.obj['amount'],"amount valueee")
+  }
 
-  //       let message = response.message ? response.message : 'Data found Successfully';
-  //       // let status = this.statusService.handleResponseStatus(response.status, message);
-  //       // console.log(status)
-  //       // console.log("response", response);
-
-  //       if (response.status === true) {
-  //         this.departmentDD = response.data;
-  //         // this.notyf.success(message)
-
-  //         this.back()
-  //       }
-  //       else if (response.status === "expired") {
-  //         this.router.navigate(["login"]);
-  //       }
-
-  //       else {
-  //         this.notyf.error(message)
-  //       }
-
-  //     },
-  //     error: (err) => {
-  //       console.error('Error:', err);
-  //       this.notyf.error(err)
-  //     }
-  //   });
-  // }
-
- async back() {
+  back() {
     this.obj = {}
     this.createFlag = false
-    await this.fetchexperience()
+
   }
   status: any = [{ value: 'active', label: 'ACTIVE' }, { value: 'inactive', label: 'INACTIVE' }]
-
   onSubmit() {
     console.log(this.obj)
-    // if (!ValidationUtil.showRequiredError('experience name', this.obj.name, this.notyf)) {
+    // if (!ValidationUtil.showRequiredError('Basic name', this.obj.name, this.notyf)) {
     //   return;
     // }
     // if (!ValidationUtil.showRequiredError('Department', this.obj['department'], this.notyf)) {
     //   return;
     // }
-this.obj['employeeId']=this.personalDetails.id
-    this.empService.addexperience(this.obj).subscribe({
+    this.obj['employeeId'] = this.personalDetails.id
+    this.payrollService.createAllowance(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
 
@@ -96,7 +86,7 @@ this.obj['employeeId']=this.personalDetails.id
 
         if (status === true) {
           this.notyf.success(message)
-
+          this.getallowances()
           this.back()
         }
         else if (status === "expired") {
@@ -110,7 +100,6 @@ this.obj['employeeId']=this.personalDetails.id
       },
       error: (err) => {
         console.error('Error:', err);
-            this.notyf.error(err?.error?.message)
       }
     });
 
@@ -118,16 +107,16 @@ this.obj['employeeId']=this.personalDetails.id
 
 
   }
-  async fetchexperience() {
-    let obj :any={}
-    obj['employeeId']=this.personalDetails.id
+  async getallowances() {
+    let obj: any = {}
+    obj['employeeId'] = this.personalDetails.id
     this.desigantionList = []
-    this.empService.getexperiences(obj).subscribe(data => {
-       let message = data.message ? data.message : 'Data found Successfully';
-        let status = this.statusService.handleResponseStatus(data.status, message);
+    this.payrollService.getAllowance(obj).subscribe(data => {
+      let message = data.message ? data.message : 'Data found Successfully';
+      let status = this.statusService.handleResponseStatus(data.status, message);
 
       if (status == true) {
-           this.desigantionList = []
+        this.desigantionList = []
         this.notyf.success(data['message']);
         this.desigantionList = data.data;
       } else {
@@ -160,9 +149,9 @@ this.obj['employeeId']=this.personalDetails.id
     this.updateFlag = true
   }
   updatedata() {
-    this.obj['id']=this.editingId
-      this.obj['employeeId']=this.personalDetails.id
-    this.empService.updateexperience(this.editingId, this.obj).subscribe({
+    this.obj['id'] = this.editingId
+    this.obj['employeeId'] = this.personalDetails.id
+    this.payrollService.updateAllowance(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -171,7 +160,7 @@ this.obj['employeeId']=this.personalDetails.id
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchexperience();
+          this.getallowances();
           this.resetForm();
         }
         else if (status === "expired") {
@@ -199,41 +188,41 @@ this.obj['employeeId']=this.personalDetails.id
   delete(id: any) {
 
 
-      Swal.fire({
-          title: "Are you sure?",
-          text: "Do you Want to Delete this",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, delete it!",
-          cancelButtonText: "No, cancel!",
-          reverseButtons: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.deleteexperience(id)
-            // Swal.fire({
-            //   title: "Deleted!",
-            //   text: "Your file has been deleted.",
-            //   icon: "success"
-            // });
-          } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-          ) {
-            // Swal.fire({
-            //   title: "Cancelled",
-            //   text: "Your imaginary file is safe :)",
-            //   icon: "error"
-            // });
-          }
-        });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you Want to Delete this",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteallownaces(id)
+        // Swal.fire({
+        //   title: "Deleted!",
+        //   text: "Your file has been deleted.",
+        //   icon: "success"
+        // });
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        // Swal.fire({
+        //   title: "Cancelled",
+        //   text: "Your imaginary file is safe :)",
+        //   icon: "error"
+        // });
+      }
+    });
 
 
   }
-  deleteexperience(id:any){
-     let obj:any={}
-    obj['id']=id
+  deleteallownaces(id: any) {
+    let obj: any = {}
+    obj['id'] = id
 
- this.empService.deleteexperience(obj).subscribe({
+    this.payrollService.deleteAllowance(obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -242,7 +231,7 @@ this.obj['employeeId']=this.personalDetails.id
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchexperience();
+          this.getallowances();
         }
         else if (status === "expired") {
           this.router.navigate(["login"]);
@@ -258,5 +247,18 @@ this.obj['employeeId']=this.personalDetails.id
 
     })
   }
-}
 
+  calculateamt() {
+    this.obj['finalAmount'] = (this.obj['amount'] * this.obj['typeValue']) / 100
+
+  }
+  dependentStatus: any = false
+  managestatus() {
+    if (this.obj['type'] == 'percentage') {
+      this.dependentStatus = true
+    } else {
+      this.dependentStatus = false
+    }
+  }
+
+}

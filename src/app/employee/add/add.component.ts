@@ -15,10 +15,11 @@ import { Notyf } from 'notyf';
 import * as bootstrap from 'bootstrap';
 import { BasicComponent } from "../../payroll/basic/basic.component";
 import { AllowancesComponent } from "../../payroll/allowances/allowances.component";
+import { TotalSalaryComponentComponent } from "../../payroll/total-salary-component/total-salary-component.component";
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent, ExperienceComponent, BankDetailsComponent, BasicComponent, AllowancesComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent, ExperienceComponent, BankDetailsComponent, BasicComponent, AllowancesComponent, TotalSalaryComponentComponent],
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css']
 })
@@ -28,11 +29,12 @@ export class AddComponent {
   constructor(private Documentervice: MasterService,
     private router: Router,
     private employeeService: EmployeeService, public dataService: DataService, public statusService: StatusService) {
-    this.countrydd();
-    this.dataService.currentMessage.subscribe(msg => {
-      this.personalDetails = msg || {};
-    });
+
+     this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
+
     this.notyf = new Notyf();
+    console.log(this.personalDetails,"personaldetails");
+
   }
   maritalStatusList = [
     { value: 'Single', label: 'Single' },
@@ -50,6 +52,9 @@ export class AddComponent {
   async ngOnInit() {
     this.baseurl = localStorage.getItem('base_url')?.replace(/["\\,]/g, '') || '';
     await this.fetchDocument()
+    await this.countrydd()
+    await this.getstates(this.personalDetails.country)
+    await this.getcity(this.personalDetails.state)
   }
   countryList: any = [];
   employmentTypes: any[] = [];
@@ -132,7 +137,7 @@ export class AddComponent {
           // this.resetForm();
         }
         else if (status === "expired") {
-          this.router.navigate(["/login"]);
+          this.router.navigate(["login"]);
         }
 
         else {
