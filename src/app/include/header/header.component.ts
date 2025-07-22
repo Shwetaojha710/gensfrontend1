@@ -22,19 +22,24 @@ toggleshow() {
 }
 
 logout(){
+  console.log("hello logout api called")
 
         this.auth.logout().subscribe({
       next: (res) => {
-
-        const data = JSON.parse(res)
+        const data = res
         console.log(data,"ss")
         if (data.status === true) {
           localStorage.clear()
           if (this.notyf) {
             this.notyf.success(data.message);
           }
-          this.router.navigate(['logout']);
-        } else {
+          this.router.navigate(['login']);
+        }
+        else if(data.status=='expired'){
+          this.notyf?.error(data.message);
+          this.router.navigate(['login']);
+        }
+        else {
           if (this.notyf) {
             this.notyf.error(data.message);
           }

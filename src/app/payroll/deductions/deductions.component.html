@@ -3,7 +3,7 @@
     <div class="col-md">
       <!-- <div class="card"> -->
       <h5 class="card-header d-flex justify-content-between align-items-center">
-        <span>Allowance</span>
+        <!-- <span>Deductions</span> -->
         <button
           type="button"
           class="btn btn-xs btn-primary float-end"
@@ -21,8 +21,8 @@
               type="text"
               class="form-control"
               id="defaultFormControlInput"
-              placeholder="Enter Name"
-              [(ngModel)]="obj['name']"
+              placeholder="Enter Deduction Name"
+              [(ngModel)]="obj['deductionName']"
               aria-describedby="defaultFormControlHelp"
             />
           </div>
@@ -33,7 +33,7 @@
               [items]="type"
               bindLabel="label"
               bindValue="value"
-              [(ngModel)]="obj['type']"
+              [(ngModel)]="obj['deductionType']"
               [multiple]="false"
               placeholder="Select Type"
               name="Type"
@@ -92,7 +92,7 @@
               class="form-control"
               id="defaultFormControlInput"
               placeholder="Enter Type Value"
-              [(ngModel)]="obj['typeValue']"
+              [(ngModel)]="obj['deductionValue']"
               aria-describedby="defaultFormControlHelp"
               (change)="calculateamt()"
             />
@@ -121,7 +121,7 @@
               class="form-control"
               id="defaultFormControlInput"
               placeholder="Final Amount"
-              [(ngModel)]="obj['finalAmount']"
+              [(ngModel)]="obj['deductionValue']"
               aria-describedby="defaultFormControlHelp"
             />
           </div>
@@ -185,7 +185,7 @@
     <div class="col-md">
       <!-- <div class="card"> -->
       <h5 class="card-header d-flex justify-content-between align-items-center">
-        <span>Allowance List</span>
+        <span>Deduction List</span>
         <button
           *ngIf="createFlag == false"
           type="button"
@@ -202,11 +202,11 @@
               <th>SI.No</th>
               <th>Name</th>
               <th>Type</th>
-              <th>Type Value</th>
-              <th>Dependent</th>
-              <th>basicAmount</th>
+              <th>Deduction Value</th>
+              <!-- <th>Dependent</th>
+              <th>basicAmount</th> -->
               <th>startDate</th>
-              <th>Status</th>
+              <!-- <th>Status</th> -->
               <th>createdAt</th>
               <th>Actions</th>
             </tr>
@@ -214,31 +214,31 @@
           <tbody class="table-border-bottom-0">
             <tr *ngFor="let item of desigantionList; let i = index">
               <th scope="row">{{ i + 1 }}</th>
-              <td>{{ item["name"] }}</td>
+              <td>{{ item["deductionName"] }}</td>
               <td>
-                {{ item["type"] }}
+                {{ item["deductionType"] }}
               </td>
               <td>
-                {{ item["typeValue"] }}
+                {{ item["deductionValue"] }}
               </td>
-              <td>
+              <!-- <td>
                 {{ item["dependent"] }}
-              </td>
-              <td>
+              </td> -->
+              <!-- <td>
                 {{ item["finalAmount"] }}
-              </td>
+              </td> -->
               <td>
                 {{ item["startDate"] }}
               </td>
 
-              <td>
+              <!-- <td>
                 <span
                   class="badge rounded overflow-hidden px-2"
                   [ngClass]="getStatusClass(item['status'])"
                 >
                   {{ item["status"] }}
                 </span>
-              </td>
+              </td> -->
 
               <td>{{ item["createdAt"] }}</td>
               <td>

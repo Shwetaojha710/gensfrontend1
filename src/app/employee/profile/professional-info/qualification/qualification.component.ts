@@ -230,7 +230,7 @@ export class QualificationComponent {
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchDocument(); ``
+          this.fetchDocument();
         }
         else if (status === "expired") {
           this.router.navigate(["login"]);

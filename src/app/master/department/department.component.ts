@@ -198,7 +198,7 @@ export class DepartmentComponent {
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchDepartments();``
+          this.fetchDepartments();
         }
         else if (status === "expired") {
           this.router.navigate(["login"]);

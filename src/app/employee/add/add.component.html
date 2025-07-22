@@ -42,6 +42,8 @@
           Salary
         </button>
       </li>
+
+
     </ul>
     <div class="tab-content">
       <div class="tab-pane fade active show" id="navs-top-home" role="tabpanel">
@@ -607,7 +609,7 @@ disabled
                     role="tab"
                     type="link"
                   >
-                    <i class="icon-base ri ri-bank-card-line icon-sm me-2"></i>
+                    <i class="fas fa-briefcase"></i> &nbsp;
                     <span class="align-middle">Basic</span>
                   </button>
                   <!-- <a class="nav-link active show" id="payment1" data-toggle="tab" href="#payment1" role="tab" aria-controls="payment1" aria-selected="true" >Basic</a> -->
@@ -622,9 +624,24 @@ disabled
                     tabindex="-1"
                   >
                     <i
-                      class="icon-base ri ri-shopping-cart-line icon-sm me-2"
-                    ></i>
+                      class="fas fa-coins"
+                    ></i> &nbsp;
                     <span class="align-middle"> Allowance</span>
+                  </button>
+                </li>
+                       <li class="nav-item" role="presentation">
+                  <button
+                    class="nav-link tab-link waves-effect waves-light"
+                    data-bs-toggle="tab"
+                    data-bs-target="#delivery3"
+                    aria-selected="false"
+                    role="tab"
+                    tabindex="-1"
+                  >
+                    <i
+                      class="fas fa-minus-circle"
+                    ></i> &nbsp;
+                    <span class="align-middle">Statutory Deductions</span>
                   </button>
                 </li>
                  <li class="nav-item" role="presentation">
@@ -637,11 +654,12 @@ disabled
                     tabindex="-1"
                   >
                     <i
-                      class="icon-base ri ri-shopping-cart-line icon-sm me-2"
-                    ></i>
-                    <span class="align-middle"> Total Salary Component</span>
+                      class="fas fa-money-bill-wave"
+                    ></i> &nbsp;
+                    <span class="align-middle">Total Salary Component</span>
                   </button>
                 </li>
+
               </ul>
             </div>
           </div>
@@ -658,9 +676,13 @@ disabled
               <div class="tab-pane fade" id="delivery1" role="tabpanel">
                 <app-allowances></app-allowances>
               </div>
+               <div class="tab-pane fade" id="delivery3" role="tabpanel">
+                <app-deductions></app-deductions>
+              </div>
               <div class="tab-pane fade" id="delivery2" role="tabpanel">
                 <app-total-salary-component></app-total-salary-component>
               </div>
+
             </div>
           </div>
         </div>
@@ -670,13 +692,7 @@ disabled
 </div>
 
 <!-- Modal -->
-<div
-  class="modal fade"
-  id="imageModal"
-  tabindex="-1"
-  aria-labelledby="imageModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel"aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">

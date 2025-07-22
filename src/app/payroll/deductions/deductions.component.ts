@@ -76,7 +76,7 @@ console.log(this.obj['amount'],"amount valueee")
     //   return;
     // }
     this.obj['employeeId'] = this.personalDetails.id
-    this.payrollService.createAllowance(this.obj).subscribe({
+    this.payrollService.createDeduction(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
 
@@ -112,7 +112,7 @@ console.log(this.obj['amount'],"amount valueee")
     let obj: any = {}
     obj['employeeId'] = this.personalDetails.id
     this.desigantionList = []
-    this.payrollService.getAllowance(obj).subscribe(data => {
+    this.payrollService.getDeduction(obj).subscribe(data => {
       let message = data.message ? data.message : 'Data found Successfully';
       let status = this.statusService.handleResponseStatus(data.status, message);
 
@@ -152,7 +152,8 @@ console.log(this.obj['amount'],"amount valueee")
   updatedata() {
     this.obj['id'] = this.editingId
     this.obj['employeeId'] = this.personalDetails.id
-    this.payrollService.updateAllowance(this.obj).subscribe({
+    this.obj["startDate"]=this.obj['startDate']
+    this.payrollService.updateDeduction(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -199,7 +200,7 @@ console.log(this.obj['amount'],"amount valueee")
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteallownaces(id)
+        this.deleteDeductions(id)
         // Swal.fire({
         //   title: "Deleted!",
         //   text: "Your file has been deleted.",
@@ -219,11 +220,11 @@ console.log(this.obj['amount'],"amount valueee")
 
 
   }
-  deleteallownaces(id: any) {
+  deleteDeductions(id: any) {
     let obj: any = {}
     obj['id'] = id
 
-    this.payrollService.deleteAllowance(obj).subscribe({
+    this.payrollService.deleteDeduction(obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -250,12 +251,12 @@ console.log(this.obj['amount'],"amount valueee")
   }
 
   calculateamt() {
-    this.obj['finalAmount'] = (this.obj['amount'] * this.obj['typeValue']) / 100
+    this.obj['finalAmount'] = (Number(this.obj['amount']) * Number(this.obj['deductionValue'])) / 100
 
   }
   dependentStatus: any = false
   managestatus() {
-    if (this.obj['type'] == 'percentage') {
+    if (this.obj['deductionType'] == 'percentage') {
       this.dependentStatus = true
     } else {
       this.dependentStatus = false

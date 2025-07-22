@@ -3,5 +3,6 @@
         "designationdd",
         "fetchdesignation",
         "Notyf"
-    ]
+    ],
+    "angular.log": "verbose"
 }

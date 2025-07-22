@@ -42,4 +42,20 @@ baseUrl=environment.apiUrl
     return this.http.post(`${this.baseUrl}updateAllowance`, data);
   }
 
+   createDeduction(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}create-deduction-master`, data);
+  }
+
+  getDeduction(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}get-deduction-master`, data);
+  }
+
+  deleteDeduction(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}delete-deduction-master`, data);
+  }
+
+  updateDeduction(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}update-deduction-master`, data);
+  }
+
 }

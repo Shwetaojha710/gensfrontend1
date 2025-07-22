@@ -16,10 +16,11 @@ import * as bootstrap from 'bootstrap';
 import { BasicComponent } from "../../payroll/basic/basic.component";
 import { AllowancesComponent } from "../../payroll/allowances/allowances.component";
 import { TotalSalaryComponentComponent } from "../../payroll/total-salary-component/total-salary-component.component";
+import { DeductionsComponent } from "../../payroll/deductions/deductions.component";
 @Component({
   selector: 'app-add',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent, ExperienceComponent, BankDetailsComponent, BasicComponent, AllowancesComponent, TotalSalaryComponentComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, RouterModule, QualificationComponent, ExperienceComponent, BankDetailsComponent, BasicComponent, AllowancesComponent, TotalSalaryComponentComponent, DeductionsComponent],
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css']
 })
@@ -307,5 +308,8 @@ resizeAndCompressImage(
   }
   back(){
        this.router.navigate(["/layout/employee/joining"]);
+  }
+  changeTab(name:any){
+    this.router.navigate(["/layout/employee/add/profile/qualification"])
   }
 }

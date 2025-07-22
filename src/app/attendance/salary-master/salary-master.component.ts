@@ -1,23 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { INotyfNotificationOptions, Notyf } from 'notyf';
+import { Notyf } from 'notyf';
 import Swal from 'sweetalert2';
-import { MasterService } from '../../services/master.service';
+import { DataService } from '../../services/data.service';
+import { EmployeeService } from '../../services/employee.service';
 import { StatusService } from '../../services/status.service';
+import { MasterService } from '../../services/master.service';
 import { ValidationUtil } from '../../shared/utils/validation.util';
 
 @Component({
-  selector: 'app-employment-type',
-  imports: [NgSelectModule,
-    FormsModule, CommonModule],
-  templateUrl: './employment-type.component.html',
-  styleUrl: './employment-type.component.css'
+  selector: 'app-salary-master',
+  imports: [FormsModule, CommonModule, NgSelectModule,],
+  templateUrl: './salary-master.component.html',
+  styleUrl: './salary-master.component.css'
 })
-export class EmploymentTypeComponent {
- obj: any = {}
+
+export class SalaryMasterComponent {
+  obj: any = {}
   notyf: Notyf;
 
   back() {
@@ -30,31 +32,23 @@ export class EmploymentTypeComponent {
   // onSubmit() {
   //    console.log(this.obj)
   // }
-  EmployeeForm!: FormGroup;
-  EmployeeList = [];
+  AttendanceMasterList = [];
   editingId: number | null = null;
 
   constructor(
-    private fb: FormBuilder,
     private master: MasterService,
     public statusService: StatusService,
     private router: Router,
   ) {
-    this.EmployeeForm = this.fb.group({
-      name: ['', Validators.required],
-      status: ['', [Validators.required]]
-    });
+
 
     this.notyf = new Notyf();
   }
 
   async ngOnInit() {
-    this.EmployeeForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['']
-    });
 
-    await this.fetchEmployee();
+
+    await this.fetchSalaryMaster();
   }
   getStatusClass(status: any): string {
     switch (status) {
@@ -65,12 +59,15 @@ export class EmploymentTypeComponent {
     }
   }
 
-  async fetchEmployee() {
-    this.EmployeeList = []
-    this.master.getEmployee().subscribe(data => {
+  async fetchSalaryMaster() {
+    this.AttendanceMasterList = []
+    this.master.getAttendanceSetting().subscribe(data => {
+      console.log(data)
       if (data['status'] == true) {
         this.notyf.success(data['message']);
-        this.EmployeeList = data.data;
+        this.AttendanceMasterList = data.data;
+        console.log(this.AttendanceMasterList,"attendance master list");
+
       } else {
         this.notyf.error(data['message']);
       }
@@ -78,14 +75,25 @@ export class EmploymentTypeComponent {
 
 
   }
-
+  validateField(value: any, fieldName: string): boolean {
+    if (!value || value.toString().trim() === '') {
+      this.notyf.error(`Please enter a valid ${fieldName}`);
+      return false;
+    }
+    return true;
+  }
   onSubmit() {
-    if (!ValidationUtil.showRequiredError('Employment Type', this.obj.name, this.notyf)) {
+
+  if (
+      !this.validateField( this.obj.graceMinutes, 'Grace Minute') ||
+      !this.validateField(this.obj.lateAllowanceMin, 'Allowed late') ||
+      !this.validateField(this.obj.halfDayThreshold, 'final late timing') ||
+      !this.validateField(this.obj.halfdayToAbsentMin, 'Half Day to Absent Minute')
+    ) {
       return;
     }
 
-
-    this.master.addEmployee(this.obj).subscribe({
+    this.master.addSalaryMaster(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
 
@@ -97,7 +105,7 @@ export class EmploymentTypeComponent {
         if (status === true) {
 
           this.notyf.success(message)
-          this.fetchEmployee();
+          this.fetchSalaryMaster();
           this.resetForm();
         }
         else if (status === "expired") {
@@ -124,7 +132,7 @@ export class EmploymentTypeComponent {
     this.updateFlag = true
   }
   updatedata() {
-    this.master.updateEmployee(this.editingId, this.obj).subscribe({
+    this.master.updateSalaryMaster(this.editingId, this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -133,7 +141,7 @@ export class EmploymentTypeComponent {
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchEmployee();
+          this.fetchSalaryMaster();
           this.resetForm();
         }
         else if (status === "expired") {
@@ -156,7 +164,7 @@ export class EmploymentTypeComponent {
 
   delete(data: number) {
 
-     Swal.fire({
+    Swal.fire({
       title: "Are you sure?",
       text: "Do you Want to Delete this",
       icon: "warning",
@@ -166,7 +174,7 @@ export class EmploymentTypeComponent {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteemployee(data)
+        this.deleteSalaryMaster(data)
         // Swal.fire({
         //   title: "Deleted!",
         //   text: "Your file has been deleted.",
@@ -187,8 +195,8 @@ export class EmploymentTypeComponent {
 
 
   }
-  deleteemployee(data:any){
-       this.master.deleteEmployee(data).subscribe({
+  deleteSalaryMaster(data: any) {
+    this.master.deleteSalaryMaster(data).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -197,7 +205,7 @@ export class EmploymentTypeComponent {
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchEmployee();
+          this.fetchSalaryMaster();
         }
         else if (status === "expired") {
           this.router.navigate(["login"]);
@@ -219,9 +227,9 @@ export class EmploymentTypeComponent {
     this.obj = {}
     this.editingId = null;
   }
-  isInvalid(field: string): boolean {
-    const control = this.EmployeeForm.get(field);
-    return !!(control && control.touched && control.invalid);
+  isInvalid(field: string): any {
+    // const control = this.EmployeeForm.get(field);
+    // return !!(control && control.touched && control.invalid);
   }
 
   createFlag: any = false

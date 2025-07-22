@@ -18,8 +18,14 @@ import { DataService } from '../../services/data.service';
 })
 export class JoiningComponent {
   notyf: Notyf
+  maxDate: any
   constructor(public dataService: DataService, private employeeService: EmployeeService, private master: MasterService, public statusService: StatusService, private router: Router,) {
     this.notyf = new Notyf();
+    const today = new Date();
+    const year = today.getFullYear() - 18;
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const day = today.getDate().toString().padStart(2, '0');
+    this.maxDate = `${year}-${month}-${day}`;
   }
   maritalStatusList = [
     { value: 'Single', label: 'Single' },
@@ -39,6 +45,21 @@ export class JoiningComponent {
     await this.loadEmployees();
 
 
+  }
+  calculateAge(dob: string) {
+    if (!dob) return;
+
+    const birthDate = new Date(dob);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 ||(monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    this.personalDetails.age = age;
   }
   listflag: boolean = true;
   updateFlag: boolean = false;
@@ -128,13 +149,13 @@ export class JoiningComponent {
       !this.validateField(this.personalDetails.lastName, 'Last Name') ||
       !this.validateField(this.personalDetails.email, 'Email') ||
       !this.validateField(this.personalDetails.mobile, 'Mobile Number') ||
-      !this.validateField(this.personalDetails.adhaar, 'Adhaar Number') ||
+      !this.validateField(this.personalDetails.adhaarNo, 'Aadhaar Number') ||
       !this.validateField(this.personalDetails.dateOfBirth, 'Date of Birth') ||
       !this.validateField(this.personalDetails.currentaddress, 'Current Address') ||
       !this.validateField(this.personalDetails.permanentAddress, 'Permanent Address') ||
-      !this.validateField(this.personalDetails.cities, 'City'
-
-      )
+      !this.validateField(this.personalDetails.city, 'City') ||
+      !this.validateField(this.personalDetails.gender, 'Gender') ||
+      !this.validateField(this.personalDetails.martialStatus, 'Marital Status')
     ) {
       return;
     }
@@ -143,15 +164,18 @@ export class JoiningComponent {
       this.notyf.error('Please enter a valid 10 digit mobile number');
       return;
     }
-    if (this.personalDetails.adhaarNo.length !== 12) {
-      this.notyf.error('Please enter a valid 12 digit adhaar number');
+
+    const aadhaarRaw = this.personalDetails.adhaarNo.replace(/\D/g, '');
+    if (aadhaarRaw.length !== 12) {
+      this.notyf.error('Please enter a valid 12 digit Aadhaar number');
       return;
     }
     const dob = new Date(this.personalDetails.dateOfBirth);
     const formattedDob = `${dob.getDate().toString().padStart(2, '0')}/${(dob.getMonth() + 1).toString().padStart(2, '0')}/${dob.getFullYear()}`;;
     let obj: any = {}
-    obj = this.personalDetails;
+    obj = Object.assign({}, this.personalDetails);
     obj.dateOfBirth = formattedDob;
+    obj.adhaarNo = aadhaarRaw
     this.employeeService.createEmp(obj).subscribe(
       (response) => {
 
@@ -177,7 +201,7 @@ export class JoiningComponent {
       },
       (error) => {
         console.error('Error adding employee:', error);
-        this.notyf.error(error);
+        this.notyf.error(error?.error?.message);
         // alert('Failed to add employee. Please try again.');
       }
 
@@ -195,9 +219,9 @@ export class JoiningComponent {
         this.employees = [];
         this.employees = response.data || [];
       } else if (response.status === false) {
-          this.notyf.error(response.message)
+        this.notyf.error(response.message)
       }
-      else if(response.status=='expired'){
+      else if (response.status == 'expired') {
         this.router.navigate(['login'])
       }
     },
@@ -299,7 +323,6 @@ export class JoiningComponent {
     data.city = Number(data.city);
     data.country = Number(data.country);
     localStorage.setItem('employeeId', JSON.stringify(data));
-    this.dataService.changeMessage(data);
 
     this.router.navigate(['/layout/employee/add']);
   }

@@ -94,7 +94,8 @@ menuItems: MenuItem[] = [
     children: [
       { title: 'Shift Master', icon: 'ri-time-line', link: '/layout/attendance/shift' },
       { title: 'Attendance Logs', icon: 'ri-clipboard-line', link: '/layout/attendance/logs' },
-      { title: 'Leaves', icon: 'ri-leaf-line', link: '/layout/attendance/leaves' }
+      { title: 'Leaves', icon: 'ri-leaf-line', link: '/layout/attendance/leaves' },
+      { title: 'Attendance Master', icon: 'ri-leaf-line', link: '/layout/attendance/salary-master' }
     ]
   },
   {
@@ -103,7 +104,7 @@ menuItems: MenuItem[] = [
     children: [
       { title: 'Full Time Salary Master', icon: 'ri-bank-card-line', link: '/layout/payroll/full-time' },
       { title: 'Part Time Salary Master', icon: 'ri-time-line', link: '/layout/payroll/part-time' },
-      { title: 'Allowances Master', icon: 'ri-gift-line', link: '/layout/payroll/allowances' },
+      // { title: 'Allowances Master', icon: 'ri-gift-line', link: '/layout/payroll/allowances' },
       { title: 'Deductions', icon: 'ri-subtract-line', link: '/layout/payroll/deductions' }
     ]
   },
@@ -123,7 +124,8 @@ menuItems: MenuItem[] = [
       { title: 'Designation Master', icon: 'ri-team-line', link: '/layout/master/designation' },
       { title: 'Department Master', icon: 'ri-building-4-line', link: '/layout/master/department' },
       { title: 'Employment Type', icon: 'ri-briefcase-4-line', link: '/layout/master/employment-type' },
-      {title: 'Documents', icon: 'ri-file-line', link: '/layout/master/documents'}
+      {title: 'Documents', icon: 'ri-file-line', link: '/layout/master/documents'},
+      // {title: 'Attendance Master', icon: 'ri-file-line', link: '/layout/master/salary-master'}
 
     ]
   }
@@ -141,6 +143,24 @@ m.active = true;
         m.active = false;
       }
   })
+}
+
+ngOnInit() {
+  this.setActiveMenuItem(this.router.url); // Mark active item based on current URL
+}
+setActiveMenuItem(currentUrl: string) {
+  const markActive = (items: MenuItem[]) => {
+    items.forEach(item => {
+      item.active = item.link === currentUrl;
+      if (item.children) {
+        markActive(item.children);
+        // Optional: Set parent active if any child matches
+        item.active = item.children.some(c => c.active);
+      }
+    });
+  };
+
+  markActive(this.menuItems);
 }
 
 }

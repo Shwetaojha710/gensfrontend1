@@ -264,7 +264,7 @@ export class ShiftMasterComponent {
         console.log("response", response);
         if (status === true) {
           this.notyf.success(message)
-          this.fetchshifts(); ``
+          this.fetchshifts();
         }
         else if (status === "expired") {
           this.router.navigate(["login"]);

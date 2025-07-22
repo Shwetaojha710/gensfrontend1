@@ -35,12 +35,13 @@
               <small>
                 (e.g., Allow check-in up to 10 mins late without penalty)
               </small>
+
             </div>
 
             <div class="col-3">
               <label for="defaultFormControlInput" class="form-label"
-                >Monthly Late Allowance
-              </label>
+                >Monthly Late Allowance </label
+              >
               <input
                 type="number"
                 class="form-control"
@@ -50,15 +51,15 @@
                 aria-describedby="defaultFormControlHelp"
                 required
               />
-              <small>
-                (e.g., Total allowed late minutes before penalty applies)
-              </small>
+           <small>
+            (e.g., Total allowed late minutes before penalty applies)
+           </small>
+
             </div>
 
             <div class="col-3">
               <label for="defaultFormControlInput" class="form-label"
-                >Late Threshold for Half-Day
-              </label>
+                >Late Threshold for Half-Day </label>
               <input
                 type="number"
                 class="form-control"
@@ -69,15 +70,16 @@
                 required
               />
 
-              <small>
-                (e.g., If late by 30 mins or more, mark as Half-Day)
-              </small>
+           <small>
+ (e.g., If late by 30 mins or more, mark as Half-Day)
+           </small>
+
+
+
             </div>
 
             <div class="col-3">
-              <label for="defaultFormControlInput" class="form-label"
-                >Late Threshold for Full-Day Absent</label
-              >
+              <label for="defaultFormControlInput" class="form-label">Late Threshold for Full-Day Absent</label>
               <input
                 type="number"
                 class="form-control"
@@ -88,7 +90,9 @@
                 required
               />
 
-              <small> (e.g., If late by hours, mark as Absent)</small>
+
+                <small> (e.g., If late by hours, mark as Absent)</small>
+
             </div>
             <div class="col-3" *ngIf="updateFlag">
               <label for="defaultFormControlInput" class="form-label"
@@ -137,7 +141,7 @@
         <h5
           class="card-header d-flex justify-content-between align-items-center"
         >
-          <span>Attendance List</span>
+          <span>Attendance Master List</span>
           <button
             *ngIf="createFlag == false"
             type="button"
@@ -147,139 +151,60 @@
             <i class="fa-solid fa-plus"></i>&nbsp;Add
           </button>
         </h5>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-4">
-              <label for="defaultFormControlInput" class="form-label"
-                >Select Employee</label
-              >
-              <ng-select
-                [items]="EmpList"
-                bindLabel="label"
-                bindValue="value"
-                [(ngModel)]="obj['emp_id']"
-                [multiple]="false"
-                placeholder="Select Employee"
-                name="state"
-                id="select2Danger"
-                required
-                #enCashableRef="ngModel"
-              >
-              </ng-select>
-            </div>
 
-            <div class="col-4">
-              <label for="defaultFormControlInput" class="form-label"
-                >Select Month
-                <span style="color: red">*</span>
-              </label>
-              <ng-select
-                [items]="monthList"
-                bindLabel="label"
-                bindValue="value"
-                [(ngModel)]="obj['month']"
-                [multiple]="false"
-                placeholder="Select Month"
-                name="state"
-                id="select2Danger"
-                required
-                #enCashableRef="ngModel"
-              >
-              </ng-select>
-
-            </div>
-
-            <div class="col-4">
-              <label for="defaultFormControlInput" class="form-label"
-                >Select Year
-                <span style="color: red"> * </span>
-              </label>
-              <ng-select
-                [items]="yearList"
-                bindLabel="label"
-                bindValue="value"
-                [(ngModel)]="obj['year']"
-                [multiple]="false"
-                placeholder="Select Year"
-                name="state"
-                id="select2Danger"
-                required
-                #enCashableRef="ngModel"
-              >
-              </ng-select>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <div class="col-12 justify-content-center">
-  <button
-                type="button"
-                class="btn btn-sm btn-primary waves-effect waves-light"
-                (click)="fetchAttendance()"
-              >
-                Submit
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <div class="row mb-6" *ngIf="AttendanceMasterList.length > 0">
-    <div class="col-md">
-      <div class="card">
-
-     <div class="table-responsive text-nowrap">
+        <div class="table-responsive text-nowrap">
           <table class="table table-hover">
             <thead>
               <tr>
                 <th>SI.No</th>
-                 <th>Day</th>
-       <ng-container *ngFor="let day of dayList">
-  <th>{{ day }}</th>
-</ng-container>
+                <th>Grace Period</th>
+                <th>Monthly Late Allowance</th>
+                <th>Late Threshold for Half-Day</th>
+                <th>Late Threshold for Full-Day Absent (hr)</th>
+                <!-- <th>Status</th> -->
+                <!-- <th>createdAt</th> -->
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-            <tr *ngFor="let attendanceMap of AttendanceMasterList; let i = index">
-  <th scope="row">{{ i + 1 }}</th>
-   <td>
+              <tr *ngFor="let item of AttendanceMasterList; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item["graceMinutes"] }}</td>
+                <td>{{ item["lateAllowanceMin"] }}</td>
+                <td>{{ item["halfDayThreshold"] }}</td>
+                <td>{{ item["halfdayToAbsentMin"]}}</td>
+                <!-- <td>
+                  <span
+                    class="badge rounded overflow-hidden px-2"
+                    [ngClass]="getStatusClass(item['status'])"
+                  >
+                    {{ item["status"] }}
+                  </span>
+                </td> -->
+                <!-- <td>{{ item["createdAt"] }}</td> -->
 
-   </td>
-  <ng-container *ngFor="let day of dayList">
-    <td
-      [title]="'In: ' + (attendanceMap[day]?.checkIn || '-') + ' | Out: ' + (attendanceMap[day]?.checkOut || '-')"
-    >
-      <span
-        [ngClass]="{
-          'text-success': attendanceMap[day]?.status === 'Present',
-          'text-danger': attendanceMap[day]?.status === 'Absent'
-        }"
-      >
-        {{ attendanceMap[day]?.status === 'Present' ? 'P' : 'A' }}
-      </span>
-    </td>
-  </ng-container>
-
-  <td>
-    <button type="button" class="btn btn-outline-success btn-sm" (click)="update(attendanceMap)">
-      <i class="fas fa-edit"></i>
-    </button>
-    &nbsp;
-    <button type="button" class="btn btn-sm btn-outline-danger" (click)="delete(attendanceMap)">
-      <i class="fas fa-trash-alt"></i>
-    </button>
-  </td>
-</tr>
-
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-success btn-sm"
+                    (click)="update(item)"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  &nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="delete(item)"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
-
-
-<!-- </div> -->
+</div>

@@ -20,7 +20,10 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label class="col-form-label fw-bold">First Name</label>
+                <label class="col-form-label fw-bold"
+                  >First Name
+                  <span style="color: red"> * </span>
+                </label>
                 <input
                   type="text"
                   class="form-control"
@@ -39,7 +42,10 @@
               </div>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Last Name</label>
+              <label class="col-form-label fw-bold"
+                >Last Name
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="text"
                 class="form-control"
@@ -57,7 +63,10 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Phone Number</label>
+              <label class="col-form-label fw-bold"
+                >Phone Number
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="tel"
                 class="form-control"
@@ -80,10 +89,11 @@
                 Enter valid 10-digit Mobile number
               </small>
             </div>
-                <div class="col-md-3">
+            <div class="col-md-3">
               <label class="col-form-label fw-bold"
-                >Alternate Phone Number</label
-              >
+                >Alternate Phone Number
+                <span style="color: red"> * </span>
+              </label>
               <input
                 type="tel"
                 class="form-control"
@@ -109,8 +119,11 @@
                 Enter valid 10-digit Alternate Mobile number
               </small>
             </div>
-              <div class="col-md-3">
-              <label class="col-form-label fw-bold">Gender</label>
+            <div class="col-md-3">
+              <label class="col-form-label fw-bold"
+                >Gender
+                <span style="color: red"> *</span>
+              </label>
               <ng-select
                 [items]="genderList"
                 bindLabel="label"
@@ -124,7 +137,10 @@
               </ng-select>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Email</label>
+              <label class="col-form-label fw-bold"
+                >Email
+                <span style="color: red"> *</span>
+              </label>
 
               <input
                 type="email"
@@ -143,30 +159,36 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Aadhaar Number</label>
+              <label class="col-form-label fw-bold"
+                >Aadhaar Number
+                <span style="color: red"> *</span>
+              </label>
               <input
-              data-type="adhaar-number"
                 type="text"
                 class="form-control"
                 placeholder="Enter Aadhaar Number"
-                maxlength="12"
+                maxlength="14"
                 [(ngModel)]="personalDetails.adhaarNo"
                 name="aadhaarNumber"
+                (input)="onAadhaarInput($event, 'space')"
                 (keypress)="adhaarvalidaiton($event, personalDetails.mobile)"
-                pattern="^\d{12}$"
+                pattern="^\d{4}\s\d{4}\s\d{4}$"
                 required
                 #aadhaarRef="ngModel"
-
               />
               <small
                 class="text-danger"
                 *ngIf="aadhaarRef.invalid && aadhaarRef.touched"
-                >Enter valid 12-digit Aadhaar number</small
               >
+                Enter valid 12-digit Aadhaar number
+              </small>
             </div>
 
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">PAN</label>
+              <label class="col-form-label fw-bold"
+                >PAN
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="text"
                 class="form-control text-uppercase"
@@ -187,7 +209,10 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Blood Group</label>
+              <label class="col-form-label fw-bold"
+                >Blood Group
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="text"
                 class="form-control"
@@ -204,8 +229,11 @@
                 Enter valid First Name
               </small>
             </div>
-             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Marital Status</label>
+            <div class="col-md-3">
+              <label class="col-form-label fw-bold"
+                >Marital Status
+                <span style="color: red"> *</span>
+              </label>
               <ng-select
                 [items]="maritalStatusList"
                 bindLabel="label"
@@ -218,7 +246,10 @@
               </ng-select>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Father Name</label>
+              <label class="col-form-label fw-bold"
+                >Father Name
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="text"
                 class="form-control"
@@ -236,7 +267,10 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Mother Name</label>
+              <label class="col-form-label fw-bold"
+                >Mother Name
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="text"
                 class="form-control"
@@ -254,9 +288,11 @@
               </small>
             </div>
 
-
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Nationality</label>
+              <label class="col-form-label fw-bold"
+                >Nationality
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="text"
                 class="form-control"
@@ -274,15 +310,21 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">DOB</label>
+              <label class="col-form-label fw-bold"
+                >DOB
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="date"
                 class="form-control"
                 [(ngModel)]="personalDetails.dateOfBirth"
+                [max]="maxDate"
                 name="dateOfBirth"
                 required
                 #dateOfBirthRef="ngModel"
+                (ngModelChange)="calculateAge($event)"
               />
+
               <small
                 class="text-danger"
                 *ngIf="dateOfBirthRef.invalid && dateOfBirthRef.touched"
@@ -291,7 +333,10 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Age</label>
+              <label class="col-form-label fw-bold"
+                >Age
+                <span style="color: red"> *</span>
+              </label>
               <input
                 type="number"
                 class="form-control"
@@ -300,6 +345,7 @@
                 name="age"
                 required
                 #ageRef="ngModel"
+                disabled
               />
               <small
                 class="text-danger"
@@ -309,7 +355,10 @@
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">Country</label>
+              <label class="col-form-label fw-bold"
+                >Country
+                <span style="color: red"> *</span>
+              </label>
               <ng-select
                 [items]="countryList"
                 bindLabel="label"
@@ -324,7 +373,10 @@
               </ng-select>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">State</label>
+              <label class="col-form-label fw-bold"
+                >State
+                <span style="color: red"> *</span>
+              </label>
               <ng-select
                 [items]="states"
                 bindLabel="label"
@@ -339,25 +391,34 @@
               </ng-select>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">PIN Code</label>
+              <label class="col-form-label fw-bold"
+                >PIN Code
+                <span style="color: red"> *</span>
+              </label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
                 placeholder="Enter PIN Code"
                 [(ngModel)]="personalDetails.pinCode"
                 name="pinCode"
                 required
                 #pinCodeRef="ngModel"
+                pattern="^[1-9][0-9]{5}$"
+                maxlength="6"
               />
+
               <small
                 class="text-danger"
                 *ngIf="pinCodeRef.invalid && pinCodeRef.touched"
               >
-                Enter valid PIN Code
+                Please enter a valid 6-digit PIN code.
               </small>
             </div>
             <div class="col-md-3">
-              <label class="col-form-label fw-bold">City</label>
+              <label class="col-form-label fw-bold"
+                >City
+                <span style="color: red"> *</span>
+              </label>
               <ng-select
                 [items]="cities"
                 bindLabel="label"
@@ -371,9 +432,11 @@
               </ng-select>
             </div>
 
-
             <div class="col-md-6">
-              <label class="col-form-label fw-bold">Permanent Address</label>
+              <label class="col-form-label fw-bold"
+                >Permanent Address
+                <span style="color: red"> *</span>
+              </label>
               <textarea
                 class="form-control"
                 rows="4"
@@ -383,7 +446,10 @@
               ></textarea>
             </div>
             <div class="col-md-6">
-              <label class="col-form-label fw-bold">Current Address</label>
+              <label class="col-form-label fw-bold"
+                >Current Address
+                <span style="color: red"> *</span>
+              </label>
               <textarea
                 class="form-control"
                 rows="4"
@@ -393,7 +459,7 @@
               ></textarea>
             </div>
           </div>
-          <br>
+          <br />
           <!-- Submit -->
           <div class="row mb-4 justify-content-end">
             <div class="col-sm-12">
@@ -426,7 +492,7 @@
         <div
           class="card-header d-flex justify-content-between align-items-center"
         >
-          <span style="font-weight: bold;">Employee List</span>
+          <span style="font-weight: bold">Employee List</span>
           <button
             *ngIf="createFlag == false"
             type="button"
@@ -470,35 +536,20 @@
                 <tr *ngFor="let item of employees; let i = index">
                   <th scope="row">{{ i + 1 }}</th>
                   <td>
-                    <!-- <li> -->
                     <span style="font-weight: bold"> Name: </span>
                     {{ item["firstName"] }} {{ item["lastName"] }}
-                    <!-- </li> -->
-                    <!-- <li>
-                      <span class="badge bg-label-primary">
-                    <i class="fas fa-envelope"></i>&nbsp;  {{ item["email"] }}
-                  </span>
-                  </li> -->
-                    <!-- </li> -->
-                    <!-- <li>
-                    {{ item["panNo"] }}
-                  </li> -->
-                    <!-- <li>
-                 <span class="badge bg-label-primary">{{ item["adhaarNo"] }}</span>
 
-               </li> -->
                     <br />
                     <span style="font-weight: bold"> DOB: </span>
                     {{ item["dateOfBirth"] | date : "dd-MM-yyyy" }}
                     <br />
 
-                    <!-- <li> -->
                     <span style="font-weight: bold">Gender: </span>
                     {{ item["gender"] }}
                     <br />
                     <span style="font-weight: bold">Marital Status :</span>
                     {{ item["martialStatus"] }}
-                    <!-- </li> -->
+
                   </td>
                   <td>
                     <span style="font-weight: bold">Mobile :</span>
@@ -513,29 +564,7 @@
                     <span style="font-weight: bold">Aadhaar Number :</span>
                     {{ item["adhaarNo"] }}
                   </td>
-                  <!-- <td>{{ item["mobile"] }}</td> -->
-                  <!-- <td>{{ item["email"] }} </td> -->
-                  <!-- <td>{{ item["panNo"] }}
 
-                  <br>
-                  <span class="badge bg-label-primary">{{ item["adhaarNo"] }}</span>
-
-                </td> -->
-                  <!-- <td>{{ item["adhaarNo"] }} </td> -->
-                  <!-- <td>{{ item["dateOfBirth"] | date:'dd-MM-yyyy' }} </td> -->
-                  <!-- <td>
-                  {{ item["permanentAddress,"] }}
-                </td>
-                <td>
-                  {{ item["currentaddress"] }}
-                </td> -->
-                  <!-- <td> {{item['gender']}}
-                  <br>
-                  <span class="badge bg-label-primary">
-                    {{ item["martialStatus"] }}
-                  </span>
-                </td> -->
-                  <!-- <td> {{item['martialStatus']}}</td> -->
                   <td>{{ item["createdAt"] | date : "M/d/yyyy, h:mm a" }}</td>
 
                   <td>
@@ -570,5 +599,4 @@
       </div>
     </div>
   </div>
-
 </div>

@@ -31,16 +31,12 @@ export class MasterService {
   getDepartments(): Observable<any> {
     return this.http.post(`${this.baseUrl}getDepartments`, {});
   }
-  //  Departmentsdd(): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}department-dd`, {});
-  // }
+
 
   Departmentsdd(): Observable<any> {
     return this.http.post(`${this.baseUrl}department-dd`, {});
   }
-  // deleteDepartment(id: number): Observable<void> {
-  //   return this.http.delete<void>(`${this.baseUrl}/delete-department`,id);
-  // }
+
   deleteDepartment(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}deleteDepartment`, data);
   }
@@ -122,5 +118,43 @@ export class MasterService {
     return this.http.post(`${this.baseUrl}getDocumentDD`, {});
   }
 
+addSalaryMaster(dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}attendance-setting`, dept);
+  }
 
+ updateSalaryMaster(id: any, dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}updateSalaryMaster`, dept);
+  }
+
+  deleteSalaryMaster(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}deleteSalaryMaster`, data);
+  }
+   getAttendanceSetting(): Observable<any> {
+    return this.http.post(`${this.baseUrl}get-attendance-setting`, {});
+  }
+
+
+
+  createLeave(dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}create-leave`, dept);
+  }
+     getLeaveList(): Observable<any> {
+    return this.http.post(`${this.baseUrl}get-leaves`, {});
+  }
+
+ updateLeave(id: any, dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}update-leaves`, dept);
+  }
+
+  deleteLeave(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}delete-leaves`, data);
+  }
+
+  getemployeeList(): Observable<any> {
+    return this.http.post(`${this.baseUrl}get-emp-list`, {});
+  }
+
+//    getAttendanceSetting(): Observable<any> {
+//     return this.http.post(`${this.baseUrl}get-attendance-setting`, {});
+//   }
 }

@@ -37,6 +37,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { JoiningComponent } from './employee/joining/joining.component';
 import { DocumentTypeComponent } from './master/document-type/document-type.component';
 import { TotalSalaryComponentComponent } from './payroll/total-salary-component/total-salary-component.component';
+import { SalaryMasterComponent } from './attendance/salary-master/salary-master.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -53,25 +54,32 @@ export const routes: Routes = [
           { path: 'list', component: ListComponent },
           { path: 'joining', component: JoiningComponent },
           { path: 'add', component: AddComponent,
-             children:[
-              { path: 'profile/qualification', component: QualificationComponent },
-             ]
+             children: [
+        { path: 'profile/qualification', component: QualificationComponent },
+        { path: 'profile/personal', component: PersonalDetailsComponent },
+        { path: 'profile/experience', component: ExperienceComponent },
+        { path: 'profile/skills', component: SkillsComponent },
+        { path: 'profile/salary', component: SalaryStructureComponent },
+        { path: 'profile/documents', component: DocumentsComponent }
+      ]
 
            },
-          { path: 'profile/personal', component: PersonalDetailsComponent },
+          // { path: 'profile/personal', component: PersonalDetailsComponent },
 
-          { path: 'profile/experience', component: ExperienceComponent },
-          { path: 'profile/skills', component: SkillsComponent },
-          { path: 'profile/salary', component: SalaryStructureComponent },
-          { path: 'profile/documents', component: DocumentsComponent }
+          // { path: 'profile/experience', component: ExperienceComponent },
+          // { path: 'profile/skills', component: SkillsComponent },
+          // { path: 'profile/salary', component: SalaryStructureComponent },
+          // { path: 'profile/documents', component: DocumentsComponent }
         ]
       },
+
       {
         path: 'attendance',
         children: [
           { path: 'shift', component: ShiftMasterComponent },
           { path: 'logs', component: LogsComponent },
-          { path: 'leaves', component: LeavesComponent }
+          { path: 'leaves', component: LeavesComponent },
+           { path: 'salary-master', component: SalaryMasterComponent }
         ]
       },
       {
@@ -90,7 +98,7 @@ export const routes: Routes = [
           { path: 'department', component: DepartmentComponent },
           { path: 'designation', component: DesignationComponent },
           { path: 'employment-type', component: EmploymentTypeComponent },
-          { path: 'documents', component: DocumentTypeComponent }
+          { path: 'documents', component: DocumentTypeComponent },
         ]
       },
       {
