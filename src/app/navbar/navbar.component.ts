@@ -42,11 +42,18 @@ menuItems: MenuItem[] = [
     title: 'Employee Management',
     icon: 'ri-layout-2-line',
     children: [
-      { title: 'Employee List', icon: 'ri-file-list-2-line', link: '/layout/employee/list' },
-
-      { title: 'Add Employee', icon: 'ri-user-add-line', link: '/layout/employee/joining' }
+      // { title: 'Employee List', icon: 'ri-file-list-2-line', link: '/layout/employee/list' },
+      { title: 'Add Employee', icon: 'ri-user-add-line', link: '/layout/employee/joining' },
+      { title: 'Apply Leave', icon: 'ri-file-list-2-line', link: '/layout/employee/apply-leave' },
     ]
   },
+  // {
+  //   title: 'Leave Management',
+  //   icon: 'ri-layout-2-line',
+  //   children: [
+  //     { title: 'Apply Leave', icon: 'ri-file-list-2-line', link: '/layout/leave-management/apply-leave' },
+  //   ]
+  // },
   // {
   //   title: 'Employee Profile',
   //   icon: 'ri-user-line',

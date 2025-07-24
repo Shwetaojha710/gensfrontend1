@@ -9,10 +9,11 @@ import { DataService } from '../../../../services/data.service';
 import { EmployeeService } from '../../../../services/employee.service';
 import { StatusService } from '../../../../services/status.service';
 import { MasterService } from '../../../../services/master.service';
+import { ValidationUtil } from '../../../../shared/utils/validation.util';
 
 @Component({
   selector: 'app-assign-leave',
-   imports: [NgSelectModule,
+  imports: [NgSelectModule,
     FormsModule, CommonModule],
   templateUrl: './assign-leave.component.html',
   styleUrl: './assign-leave.component.css'
@@ -23,22 +24,31 @@ export class AssignLeaveComponent {
   obj: any = {}
   notyf: Notyf;
   desigantionList: any = []
-  personalDetails:any=[]
-  constructor(    private master: MasterService,public empService: EmployeeService, private router: Router, public statusService: StatusService,public dataService:DataService) {
+  personalDetails: any = []
+  constructor(private master: MasterService, public empService: EmployeeService, private router: Router, public statusService: StatusService, public dataService: DataService) {
     this.notyf = new Notyf();
 
-   this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
+    this.personalDetails = JSON.parse(localStorage.getItem('employeeId') || '{}');
   }
-   carryForward: any = [{ value: false, label: 'NO' }, { value: true, label: 'YES' }]
+  carryForward: any = [{ value: false, label: 'NO' }, { value: true, label: 'YES' }]
   departmentDD: any = []
   yearList: any = [];
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalPages = 0;
+  updateDisplayedList() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+
+    this.LeaveList = this.originalList.slice(start, end);
+    this.totalPages = Math.ceil(this.originalList.length / this.itemsPerPage);
+  }
   async ngOnInit() {
-    // await this.experiencedd()
     await this.fetchAssignLeaveList()
     await this.getYear()
     await this.getLeaveTypeList()
   }
-    leaveTypeList: any = [];
+  leaveTypeList: any = [];
   async getLeaveTypeList() {
     this.leaveTypeList = []
     this.master.getLeaveTypeList().subscribe((data: { [x: string]: any; data: any; }) => {
@@ -76,21 +86,30 @@ export class AssignLeaveComponent {
     });
 
   }
-   onLeaveTypeChange(id:any){
-    this.leaveTypeList = this.leaveTypeList.filter((item:any) => item.value == id)
-    this.obj['totalAssigned']=this.leaveTypeList[0]?.['allowedPerYear']
-   }
- async back() {
+  onLeaveTypeChange(id: any) {
+    this.leaveTypeList = this.leaveTypeList.filter((item: any) => item.value == id)
+    this.obj['totalAssigned'] = this.leaveTypeList[0]?.['allowedPerYear']
+  }
+  async back() {
     this.obj = {}
     this.createFlag = false
     await this.fetchAssignLeaveList()
   }
   status: any = [{ value: 'active', label: 'ACTIVE' }, { value: 'inactive', label: 'INACTIVE' }]
 
-  onSubmit() {
+   onSubmit() {
     console.log(this.obj)
+     if (!ValidationUtil.showRequiredError('Year', this.obj['year'], this.notyf)) {
+      return;
+    }
+    if (!ValidationUtil.showRequiredError('Leave Type', this.obj['leaveTypeId'], this.notyf)) {
+      return;
+    }
+    if (!ValidationUtil.showRequiredError('Carry Forwarded', this.obj['carryForwarded'], this.notyf)) {
+      return;
+    }
 
-this.obj['employeeId']=this.personalDetails.id
+    this.obj['employeeId'] = this.personalDetails.id
     this.empService.assignedLeave(this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
@@ -116,29 +135,30 @@ this.obj['employeeId']=this.personalDetails.id
       },
       error: (err) => {
         console.error('Error:', err);
-            this.notyf.error(err?.error?.message)
+        this.notyf.error(err?.error?.message)
       }
     });
 
-
-
-
   }
-  NewObj:any={}
-  LeaveList:any=[]
+  NewObj: any = {}
+  LeaveList: any = []
   async fetchAssignLeaveList() {
-    let obj :any={}
-    obj['employeeId']=this.personalDetails.id
-    obj['year']=this.NewObj['year']
+    let obj: any = {}
+    obj['employeeId'] = this.personalDetails.id
+    obj['year'] = this.NewObj['year']
     this.LeaveList = []
+    this.originalList = []
     this.empService.getAssignLeaveList(obj).subscribe(data => {
-       let message = data.message ? data.message : 'Data found Successfully';
-        let status = this.statusService.handleResponseStatus(data.status, message);
+      let message = data.message ? data.message : 'Data found Successfully';
+      let status = this.statusService.handleResponseStatus(data.status, message);
 
       if (status == true) {
-           this.LeaveList = []
+        this.LeaveList = []
         this.notyf.success(data['message']);
+
         this.LeaveList = data.data;
+        this.originalList = this.LeaveList
+
       } else {
         this.notyf.error(data['message']);
       }
@@ -155,7 +175,8 @@ this.obj['employeeId']=this.personalDetails.id
   createFlag: any = false
   listflag: any = true
   updateFlag: any = false
-  editingId: any
+  editingId: any;
+  searchText: any;
   opencreate() {
     this.createFlag = true
     this.listflag = false
@@ -169,8 +190,8 @@ this.obj['employeeId']=this.personalDetails.id
     this.updateFlag = true
   }
   updatedata() {
-    this.obj['id']=this.editingId
-      this.obj['employeeId']=this.personalDetails.id
+    this.obj['id'] = this.editingId
+    this.obj['employeeId'] = this.personalDetails.id
     this.empService.updateexperience(this.editingId, this.obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
@@ -208,41 +229,41 @@ this.obj['employeeId']=this.personalDetails.id
   delete(id: any) {
 
 
-      Swal.fire({
-          title: "Are you sure?",
-          text: "Do you Want to Delete this",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, delete it!",
-          cancelButtonText: "No, cancel!",
-          reverseButtons: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.deleteexperience(id)
-            // Swal.fire({
-            //   title: "Deleted!",
-            //   text: "Your file has been deleted.",
-            //   icon: "success"
-            // });
-          } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-          ) {
-            // Swal.fire({
-            //   title: "Cancelled",
-            //   text: "Your imaginary file is safe :)",
-            //   icon: "error"
-            // });
-          }
-        });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you Want to Delete this",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteexperience(id)
+        // Swal.fire({
+        //   title: "Deleted!",
+        //   text: "Your file has been deleted.",
+        //   icon: "success"
+        // });
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        // Swal.fire({
+        //   title: "Cancelled",
+        //   text: "Your imaginary file is safe :)",
+        //   icon: "error"
+        // });
+      }
+    });
 
 
   }
-  deleteexperience(id:any){
-     let obj:any={}
-    obj['id']=id
+  deleteexperience(id: any) {
+    let obj: any = {}
+    obj['id'] = id
 
- this.empService.deleteexperience(obj).subscribe({
+    this.empService.deleteexperience(obj).subscribe({
       next: (response: any) => {
         console.log('response', response);
         let message = response.message ? response.message : 'Data found Successfully';
@@ -266,5 +287,37 @@ this.obj['employeeId']=this.personalDetails.id
       }
 
     })
+  }
+  originalList: any = []
+  applyFilter(event: any) {
+    this.searchText = event?.target.value;
+
+    if (!this.searchText || this.searchText.trim() === '') {
+      this.LeaveList = [...this.originalList];
+      this.updateDisplayedList();
+      return;
+    }
+
+    const search = this.searchText.toLowerCase();
+
+    this.LeaveList = this.originalList.filter((item: any) =>
+      Object.values(item).some((val) =>
+        String(val).toLowerCase().includes(search)
+      )
+    );
+    this.currentPage = 1;
+  }
+  getMin(a: number, b: number): number {
+    return Math.min(a, b);
+  }
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.updateDisplayedList();
+  }
+  onItemsPerPageChange(event: any) {
+    this.itemsPerPage = +event.target.value;
+    this.currentPage = 1; // Reset to first page
+    this.updateDisplayedList();
   }
 }

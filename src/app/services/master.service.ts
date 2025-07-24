@@ -159,6 +159,12 @@ addSalaryMaster(dept: any): Observable<any> {
   getLeaveTypeList(): Observable<any> {
     return this.http.post(`${this.baseUrl}get-leave-type-dd`, {});
   }
+   ApplyLeave(dept: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}apply-leave`, dept);
+  }
+     getapplyLeaveList(): Observable<any> {
+    return this.http.post(`${this.baseUrl}get-leaves-list`, {});
+  }
 
 //    getAttendanceSetting(): Observable<any> {
 //     return this.http.post(`${this.baseUrl}get-attendance-setting`, {});

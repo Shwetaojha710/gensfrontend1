@@ -40,6 +40,7 @@ import { TotalSalaryComponentComponent } from './payroll/total-salary-component/
 import { SalaryMasterComponent } from './attendance/salary-master/salary-master.component';
 import { BankDetailsComponent } from './employee/profile/professional-info/bank-details/bank-details.component';
 import { AssignLeaveComponent } from './employee/profile/professional-info/assign-leave/assign-leave.component';
+import { ApplyLeaveComponent } from './employee/apply-leave/apply-leave.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -55,6 +56,7 @@ export const routes: Routes = [
         children: [
           { path: 'list', component: ListComponent },
           { path: 'joining', component: JoiningComponent },
+             { path: 'apply-leave', component: ApplyLeaveComponent },
           { path: 'add', component: AddComponent,
              children: [
         { path: 'profile/professional-info/qualification', component: QualificationComponent },
@@ -76,7 +78,6 @@ export const routes: Routes = [
           // { path: 'profile/documents', component: DocumentsComponent }
         ]
       },
-
       {
         path: 'attendance',
         children: [

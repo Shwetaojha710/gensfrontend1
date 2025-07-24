@@ -16,19 +16,31 @@
         <div class="menu-horizontal-wrapper">
           <ul class="menu-inner">
             <ng-container *ngFor="let menu of menuItems">
-             <li
-  class="menu-item"
-  [ngClass]="{ active: menu.active, open: isAnyChildActive(menu.children || []) }"
-  (click)="toggleMenu(menu)"
->
-                <a href="javascript:void(0)" class="menu-link menu-toggle" [routerLink]="menu.link" routerLinkActive="active">
+              <li
+                class="menu-item"
+                [ngClass]="{
+                  active: menu.active,
+                  open: isAnyChildActive(menu.children || [])
+                }"
+                (click)="toggleMenu(menu)"
+              >
+                <a
+                  href="javascript:void(0)"
+                  class="menu-link menu-toggle"
+                  [routerLink]="menu.link"
+                  routerLinkActive="active"
+                >
                   <i class="menu-icon ri" [ngClass]="menu.icon"></i>
-                  <div>{{ menu.title}}</div>
+                  <div>{{ menu.title }}</div>
                 </a>
 
                 <ng-container *ngIf="menu.children && menu.children.length">
                   <ul class="menu-sub">
-                    <ng-container *ngTemplateOutlet="renderSubmenu;context: { $implicit: menu.children }"
+                    <ng-container
+                      *ngTemplateOutlet="
+                        renderSubmenu;
+                        context: { $implicit: menu.children }
+                      "
                     ></ng-container>
                   </ul>
                 </ng-container>
@@ -39,8 +51,13 @@
           <!-- Template for recursive submenu -->
           <ng-template #renderSubmenu let-submenus>
             <ng-container *ngFor="let sub of submenus">
-          <li class="menu-item" [ngClass]="{ active: sub.active, open: isAnyChildActive(sub.children) }">
-
+              <li
+                class="menu-item"
+                [ngClass]="{
+                  active: sub.active,
+                  open: isAnyChildActive(sub.children)
+                }"
+              >
                 <ng-container *ngIf="!sub.children">
                   <a
                     class="menu-link"

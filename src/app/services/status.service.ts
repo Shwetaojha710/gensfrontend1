@@ -21,7 +21,7 @@ export class StatusService {
         return status
       case 'expired':
         this.notyf.error(successMessage);
-        this.router.navigate(['/login']);
+        this.router.navigate(['login']);
         localStorage.clear();
         return status;
       case false:

@@ -128,6 +128,7 @@ export class LogsComponent {
 
   fetchAttendance() {
     this.AttendanceList = []
+    this.originalList=[]
     console.log(this.AttendanceMasterList, "attendace master list 111")
     this.attendanceService.getattendancelist(this.obj).subscribe((response: any) => {
       if (response && response.data && response.status === true) {
@@ -147,9 +148,7 @@ export class LogsComponent {
             status: statusMap[item1.status] || item1.status
           }))
         }));
-        this.originalList = [...this.AttendanceMasterList]; // full data copy
-        this.AttendanceMasterList = [...this.originalList]; // show all initially
-
+        this.originalList=this.AttendanceMasterList
         this.generateDayList(this.obj['month'], this.obj['year']);
         this.updateDisplayedList();
       } else if (response.status === false) {
