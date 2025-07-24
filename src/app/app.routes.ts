@@ -38,6 +38,8 @@ import { JoiningComponent } from './employee/joining/joining.component';
 import { DocumentTypeComponent } from './master/document-type/document-type.component';
 import { TotalSalaryComponentComponent } from './payroll/total-salary-component/total-salary-component.component';
 import { SalaryMasterComponent } from './attendance/salary-master/salary-master.component';
+import { BankDetailsComponent } from './employee/profile/professional-info/bank-details/bank-details.component';
+import { AssignLeaveComponent } from './employee/profile/professional-info/assign-leave/assign-leave.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -55,12 +57,14 @@ export const routes: Routes = [
           { path: 'joining', component: JoiningComponent },
           { path: 'add', component: AddComponent,
              children: [
-        { path: 'profile/qualification', component: QualificationComponent },
-        { path: 'profile/personal', component: PersonalDetailsComponent },
-        { path: 'profile/experience', component: ExperienceComponent },
-        { path: 'profile/skills', component: SkillsComponent },
-        { path: 'profile/salary', component: SalaryStructureComponent },
-        { path: 'profile/documents', component: DocumentsComponent }
+        { path: 'profile/professional-info/qualification', component: QualificationComponent },
+        { path: 'profile/professional-info/personal', component: PersonalDetailsComponent },
+        { path: 'profile/professional-info/experience', component: ExperienceComponent },
+        { path: 'profile/professional-info/skills', component: SkillsComponent },
+        { path: 'profile/professional-info/salary', component: SalaryStructureComponent },
+        { path: 'profile/professional-info/documents', component: DocumentsComponent },
+        { path: 'profile/professional-info/bank-details', component: BankDetailsComponent },
+        { path: 'profile/professional-info/assign-leave', component: AssignLeaveComponent }
       ]
 
            },

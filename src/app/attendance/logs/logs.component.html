@@ -1,136 +1,4 @@
 <div class="container-fluid mt-5">
-  <div class="row mb-6" *ngIf="createFlag">
-    <div class="col-md">
-      <div class="card">
-        <h5
-          class="card-header d-flex justify-content-between align-items-center"
-        >
-          <span>Salary Master</span>
-          <button
-            type="button"
-            class="btn btn-xs btn-primary float-end"
-            (click)="back()"
-          >
-            <i class="fa-solid fa-arrow-left"></i>&nbsp;back
-          </button>
-        </h5>
-
-        <hr style="margin: 0rem 0 !important" />
-        <div class="card-body">
-          <div class="row">
-            <div class="col-3">
-              <label for="defaultFormControlInput" class="form-label"
-                >Grace Period</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Grace Period"
-                [(ngModel)]="obj['graceMinutes']"
-                aria-describedby="defaultFormControlHelp"
-                required
-              />
-
-              <small>
-                (e.g., Allow check-in up to 10 mins late without penalty)
-              </small>
-            </div>
-
-            <div class="col-3">
-              <label for="defaultFormControlInput" class="form-label"
-                >Monthly Late Allowance
-              </label>
-              <input
-                type="number"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Monthly Late Allowance"
-                [(ngModel)]="obj['lateAllowanceMin']"
-                aria-describedby="defaultFormControlHelp"
-                required
-              />
-              <small>
-                (e.g., Total allowed late minutes before penalty applies)
-              </small>
-            </div>
-
-            <div class="col-3">
-              <label for="defaultFormControlInput" class="form-label"
-                >Late Threshold for Half-Day
-              </label>
-              <input
-                type="number"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Late Threshold for Half-Day"
-                [(ngModel)]="obj['halfDayThreshold']"
-                aria-describedby="defaultFormControlHelp"
-                required
-              />
-
-              <small>
-                (e.g., If late by 30 mins or more, mark as Half-Day)
-              </small>
-            </div>
-
-            <div class="col-3">
-              <label for="defaultFormControlInput" class="form-label"
-                >Late Threshold for Full-Day Absent</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="defaultFormControlInput"
-                placeholder="Enter Late Threshold for Full-Day Absent "
-                [(ngModel)]="obj['halfdayToAbsentMin']"
-                aria-describedby="defaultFormControlHelp"
-                required
-              />
-
-              <small> (e.g., If late by hours, mark as Absent)</small>
-            </div>
-            <div class="col-3" *ngIf="updateFlag">
-              <label for="defaultFormControlInput" class="form-label"
-                >Status</label
-              >
-              <ng-select
-                [items]="status"
-                bindLabel="label"
-                bindValue="value"
-                [(ngModel)]="obj['status']"
-                [multiple]="false"
-                placeholder="Select Status"
-                name="status"
-                id="select2Danger"
-              >
-              </ng-select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12 mt-2">
-              <button
-                *ngIf="createFlag && updateFlag == false"
-                type="button"
-                class="btn btn-sm btn-primary waves-effect waves-light"
-                (click)="onSubmit()"
-              >
-                Submit
-              </button>
-              <button
-                *ngIf="updateFlag"
-                type="button"
-                class="btn btn-sm btn-primary waves-effect waves-light"
-                (click)="updatedata()"
-              >
-                Update
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="row mb-6">
     <div class="col-md">
       <div class="card">
@@ -138,14 +6,7 @@
           class="card-header d-flex justify-content-between align-items-center"
         >
           <span>Attendance List</span>
-          <button
-            *ngIf="createFlag == false"
-            type="button"
-            class="btn btn-xs btn-primary float-end"
-            (click)="opencreate()"
-          >
-            <i class="fa-solid fa-plus"></i>&nbsp;Add
-          </button>
+
         </h5>
         <div class="card-body">
           <div class="row">
@@ -186,7 +47,6 @@
                 #enCashableRef="ngModel"
               >
               </ng-select>
-
             </div>
 
             <div class="col-4">
@@ -211,7 +71,7 @@
           </div>
           <div class="row mt-2">
             <div class="col-12 justify-content-center">
-  <button
+              <button
                 type="button"
                 class="btn btn-sm btn-primary waves-effect waves-light"
                 (click)="fetchAttendance()"
@@ -219,67 +79,201 @@
                 Submit
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="card" *ngIf="AttendanceMasterList.length>0">
+    <div class="card-datatable text-nowrap">
+      <div
+        id="DataTables_Table_0_wrapper"
+        class="dt-container dt-bootstrap5 dt-empty-footer"
+      >
+        <div class="row card-header mx-0 px-2">
+          <div
+            class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto"
+          >
+            <p class="card-title mb-0 text-md-start text-center">
+
+        <span class="text-success">P = Present</span> &nbsp;
+
+        <span class="text-danger">A = Absent</span> &nbsp;
+
+        <span class="text-danger">L = Leave</span> &nbsp;
+
+        <span class="text-info">H = Holiday</span> &nbsp;
+
+        <span class="text-warning">O = Off Day</span> &nbsp;
+
+        <span class="text-primary">WO = Week Off</span> &nbsp;
+
+
+            </p>
+          </div>
+          <div
+            class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto mt-0"
+          >
+            <div class="dt-buttons btn-group flex-wrap">
+              <div class="btn-group">
+                <button
+                  class="btn btn-xs buttons-collection btn-label-primary dropdown-toggle me-4 waves-effect border-none"
+                  tabindex="0"
+                  aria-controls="DataTables_Table_0"
+                  type="button"
+                  aria-haspopup="dialog"
+                  aria-expanded="false"
+                  (click)="export()"
+                >
+                  <span
+                    ><span class="d-flex align-items-center gap-2"
+                      ><i
+                        class="icon-base ri ri-external-link-line icon-18px"
+                      ></i>
+                      <span class="d-none d-sm-inline-block">Export</span></span
+                    ></span
+                  >
+                </button>
+
+              </div>
+            </div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-  <div class="row mb-6" *ngIf="AttendanceMasterList.length > 0">
-    <div class="col-md">
-      <div class="card">
+        <div class="row m-3 mx-2 my-0 justify-content-between">
 
-     <div class="table-responsive text-nowrap">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>SI.No</th>
-                 <th>Day</th>
-       <ng-container *ngFor="let day of dayList">
-  <th>{{ day }}</th>
-</ng-container>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-            <tr *ngFor="let attendanceMap of AttendanceMasterList; let i = index">
-  <th scope="row">{{ i + 1 }}</th>
-   <td>
+          <div  class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto" >
+            <div class="dt-length">
+              <label for="dt-length-0" >Show
+                <select name="DataTables_Table_0_length"  aria-controls="DataTables_Table_0"
+                 class="form-select form-select-sm"  id="dt-length-0"
+                   (change)="onItemsPerPageChange($event)"
+                 >
 
-   </td>
-  <ng-container *ngFor="let day of dayList">
-    <td
-      [title]="'In: ' + (attendanceMap[day]?.checkIn || '-') + ' | Out: ' + (attendanceMap[day]?.checkOut || '-')"
-    >
-      <span
-        [ngClass]="{
-          'text-success': attendanceMap[day]?.status === 'Present',
-          'text-danger': attendanceMap[day]?.status === 'Absent'
-        }"
-      >
-        {{ attendanceMap[day]?.status === 'Present' ? 'P' : 'A' }}
-      </span>
-    </td>
-  </ng-container>
+                <!-- <option value="7">7</option> -->
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  </select>entries</label>
+            </div>
+          </div>
+          <div
+            class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto mt-0"
+          >
+            <div class="dt-search mt-md-5 mt-0">
+              <label for="dt-search-0">Search:</label
+              ><input
+                type="search"
+                class="form-control"
+                id="dt-search-0"
+                placeholder="Search By Name"
+                aria-controls="DataTables_Table_0"
+                (input)="applyFilter($event)"
+              />
 
-  <td>
-    <button type="button" class="btn btn-outline-success btn-sm" (click)="update(attendanceMap)">
-      <i class="fas fa-edit"></i>
-    </button>
-    &nbsp;
-    <button type="button" class="btn btn-sm btn-outline-danger" (click)="delete(attendanceMap)">
-      <i class="fas fa-trash-alt"></i>
-    </button>
-  </td>
-</tr>
-
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="justify-content-between dt-layout-table">
+          <div
+            class="d-md-flex justify-content-between align-items-center dt-layout-full table-responsive"
+          >
+            <table
+              class="datatables-basic table table-bordered table-responsive dataTable dtr-column"
+              id="DataTables_Table_0"
+              aria-describedby="DataTables_Table_0_info"
+            >
+                            <thead>
+                <tr role="row">
+                  <th style="width: 120px; font-size: 12px">Employee</th>
+
+                  <th
+                    *ngFor="let day of dayList"
+                    style="width: 50px; font-size: 12px"
+                  >
+                    {{ day }}
+                  </th>
+                </tr>
+              </thead>
+
+               <tbody>
+                <tr *ngFor="let item of AttendanceMasterList">
+                  <td style="width: 100px; font-size: 12px">
+                    {{ item.employee_name }}
+                  </td>
+                  <ng-container *ngFor="let day of item.data">
+                    <td style="width: 50px; font-size: 12px">
+                      <span
+                        [ngClass]="{
+                          'text-success': day?.status == 'P',
+                          'text-danger': day?.status == 'A',
+                          'text-primary': day?.status == 'WO'
+                        }"
+                      >
+                        {{ day?.status }}
+                      </span>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+              <tfoot></tfoot>
+            </table>
+          </div>
+        </div>
+        <!-- Pagination & Info -->
+<div class="row mx-3 justify-content-between">
+  <div
+    class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto"
+  >
+    <div class="dt-info" aria-live="polite" role="status">
+   Showing {{ (currentPage - 1) * itemsPerPage + 1 }}
+to {{ getMin(currentPage * itemsPerPage, originalList.length) }}
+of {{ originalList.length }} entries
     </div>
   </div>
 
+  <div
+    class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto mt-0"
+  >
+    <div class="dt-paging">
+      <nav aria-label="pagination">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="goToPage(currentPage - 1)">Prev</a>
+          </li>
 
-<!-- </div> -->
+          <li
+            class="page-item"
+            *ngFor="let p of [].constructor(totalPages); let i = index"
+            [class.active]="i + 1 === currentPage"
+          >
+            <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+          </li>
+
+          <li
+            class="page-item"
+            [class.disabled]="currentPage === totalPages"
+          >
+            <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+        <!-- <div class="row mx-3 justify-content-between">
+          <div class="d-md-flex justify-content-between align-items-center dt-layout-start col-md-auto me-auto">
+            <div class="dt-info"    aria-live="polite"  id="DataTables_Table_0_info"   role="status">
+              Showing 0 to 0 of 0 entries
+            </div>
+          </div>
+          <div class="d-md-flex justify-content-between align-items-center dt-layout-end col-md-auto mt-0">
+            <div class="dt-paging"><nav aria-label="pagination"></nav></div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

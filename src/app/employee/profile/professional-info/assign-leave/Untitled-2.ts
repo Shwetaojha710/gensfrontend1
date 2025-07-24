@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef } from '@angular/core';
-import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from './navigation';
 @Component({
   selector: 'app-navbar',
@@ -47,59 +47,48 @@ menuItems: MenuItem[] = [
       { title: 'Add Employee', icon: 'ri-user-add-line', link: '/layout/employee/joining' }
     ]
   },
-  // {
-  //   title: 'Employee Profile',
-  //   icon: 'ri-user-line',
-  //   children: [
-  //     {
-  //       title: 'Personal Details',
-  //       icon: 'ri-user-3-line',
-  //       link: '/layout/employee/add/profile/personal'
-  //     },
-  //     {
-  //       title: 'Professional Info',
-  //       icon: 'ri-briefcase-line',
-  //       children: [
-  //         {
-  //           title: 'Qualification',
-  //           icon: 'ri-award-line',
-  //           link: 'profile/personal-details/qualification'
-  //         },
-  //         {
-  //           title: 'Experience',
-  //           icon: 'ri-building-line',
-  //           link: '/layout/employee/add/experience'
-  //         },
-  //         {
-  //           title: 'Skills',
-  //           icon: 'ri-lightbulb-line',
-  //           link: '/layout/employee/add/skills'
-  //         },
-  //             {
-  //           title: 'Bank-Details',
-  //           icon: 'ri-lightbulb-line',
-  //           link: '/layout/employee/add/bank-details'
-  //         }
-  //         ,
-  //        {
-  //           title: 'Assign Leave',
-  //           icon: 'ri-lightbulb-line',
-  //           link: '/layout/employee/add/profile/professional-info/assign-leave'
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       title: 'Salary Structure',
-  //       icon: 'ri-money-dollar-circle-line',
-  //       link: '/layout/employee/profile/salary'
-  //     },
-  //     // {
-  //     //   title: 'Documents',
-  //     //   icon: 'ri-file-line',
-  //     //   link: '/layout/employee/profile/documents'
-  //     // }
-  //   ]
-  // },
+  {
+    title: 'Employee Profile',
+    icon: 'ri-user-line',
+    children: [
+      {
+        title: 'Personal Details',
+        icon: 'ri-user-3-line',
+        link: '/layout/employee/profile/personal'
+      },
+      {
+        title: 'Professional Info',
+        icon: 'ri-briefcase-line',
+        children: [
+          {
+            title: 'Qualification',
+            icon: 'ri-award-line',
+            link: '/layout/employee/add/profile/qualification'
+          },
+          {
+            title: 'Experience',
+            icon: 'ri-building-line',
+            link: '/layout/employee/profile/experience'
+          },
+          {
+            title: 'Skills',
+            icon: 'ri-lightbulb-line',
+            link: '/layout/employee/profile/skills'
+          }
+        ]
+      },
+      {
+        title: 'Salary Structure',
+        icon: 'ri-money-dollar-circle-line',
+        link: '/layout/employee/profile/salary'
+      },
+      // {
+      //   title: 'Documents',
+      //   icon: 'ri-file-line',
+      //   link: '/layout/employee/profile/documents'
+      // }
+    ]
+  },
   {
     title: 'Attendance & Shift',
     icon: 'ri-calendar-check-line',
@@ -157,41 +146,22 @@ m.active = true;
   })
 }
 
-ngOnInit() {
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationEnd) {
-      this.setActiveMenuItem(event.urlAfterRedirects);
-    }
-  });
-
-  // Also run once on init
-  this.setActiveMenuItem(this.router.url);
+ async ngOnInit() {
+ await this.setActiveMenuItem(this.router.url); // Mark active item based on current URL
 }
-// Checks if any child in the given array is active (used in navbar.component.html)
-isAnyChildActive(children: any[]): boolean {
-  if (!children) return false;
-  return children.some(child => child.active || (child.children && this.isAnyChildActive(child.children)));
-}
-
-
 async setActiveMenuItem(currentUrl: string) {
-  const markActive = (items: MenuItem[]): boolean => {
-    let anyActive = false;
-
+  const markActive = (items: MenuItem[]) => {
     items.forEach(item => {
-      item.active = item.link === currentUrl;
-      if (item.children?.length) {
-        const childActive = markActive(item.children);
-        item.active = item.active || childActive;
+      item.active = item.link == currentUrl;
+      if (item.children) {
+        markActive(item.children);
+        // Optional: Set parent active if any child matches
+        item.active = item.children.some(c => c.active);
       }
-      anyActive ||= item.active;
     });
-
-    return anyActive;
   };
 
   markActive(this.menuItems);
 }
-
 
 }

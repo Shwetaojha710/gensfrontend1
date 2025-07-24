@@ -42,22 +42,6 @@
           Salary
         </button>
       </li>
-      <li class="nav-item" role="presentation">
-        <button
-          type="button"
-          class="nav-link waves-effect"
-          role="tab"
-          data-bs-toggle="tab"
-          data-bs-target="#navs-top-leave"
-          aria-controls="navs-top-leave"
-          aria-selected="false"
-          tabindex="-1"
-          (click)="navigateToLeave()"
-        >
-          Leave
-        </button>
-      </li>
-
 
 
     </ul>
@@ -106,7 +90,6 @@
                     aria-selected="false"
                     role="tab"
                     tabindex="-1"
-                     (click)="navigateToQualification()"
                   >
                     <i class="icon-base ri ri-shopping-cart-line icon-sm me-2"></i>
 
@@ -122,7 +105,6 @@
                     aria-selected="false"
                     role="tab"
                     tabindex="-1"
-                     (click)="navigateToExperience()"
                   >
                     <i class="icon-base ri ri-refresh-line icon-sm me-2"></i>
                     <span class="align-middle">Work Experience</span>
@@ -136,7 +118,6 @@
                     aria-selected="false"
                     role="tab"
                     tabindex="-1"
-
                   >
                     <i
                       class="icon-base ri ri-inbox-archive-line icon-sm me-2"
@@ -561,7 +542,6 @@ disabled
                 <app-experience></app-experience>
               </div>
               <div class="tab-pane fade" id="orders" role="tabpanel">
-                <!-- <router-outlet></router-outlet> -->
                 <app-bank-details></app-bank-details>
               </div>
             </div>
@@ -706,11 +686,6 @@ disabled
             </div>
           </div>
         </div>
-      </div>
-         <div class="tab-pane fade" id="navs-top-leave" role="tabpanel">
-       Leave
-        <hr />
-        <router-outlet></router-outlet>
       </div>
     </div>
   </div>

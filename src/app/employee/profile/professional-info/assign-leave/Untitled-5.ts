@@ -47,59 +47,48 @@ menuItems: MenuItem[] = [
       { title: 'Add Employee', icon: 'ri-user-add-line', link: '/layout/employee/joining' }
     ]
   },
-  // {
-  //   title: 'Employee Profile',
-  //   icon: 'ri-user-line',
-  //   children: [
-  //     {
-  //       title: 'Personal Details',
-  //       icon: 'ri-user-3-line',
-  //       link: '/layout/employee/add/profile/personal'
-  //     },
-  //     {
-  //       title: 'Professional Info',
-  //       icon: 'ri-briefcase-line',
-  //       children: [
-  //         {
-  //           title: 'Qualification',
-  //           icon: 'ri-award-line',
-  //           link: 'profile/personal-details/qualification'
-  //         },
-  //         {
-  //           title: 'Experience',
-  //           icon: 'ri-building-line',
-  //           link: '/layout/employee/add/experience'
-  //         },
-  //         {
-  //           title: 'Skills',
-  //           icon: 'ri-lightbulb-line',
-  //           link: '/layout/employee/add/skills'
-  //         },
-  //             {
-  //           title: 'Bank-Details',
-  //           icon: 'ri-lightbulb-line',
-  //           link: '/layout/employee/add/bank-details'
-  //         }
-  //         ,
-  //        {
-  //           title: 'Assign Leave',
-  //           icon: 'ri-lightbulb-line',
-  //           link: '/layout/employee/add/profile/professional-info/assign-leave'
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       title: 'Salary Structure',
-  //       icon: 'ri-money-dollar-circle-line',
-  //       link: '/layout/employee/profile/salary'
-  //     },
-  //     // {
-  //     //   title: 'Documents',
-  //     //   icon: 'ri-file-line',
-  //     //   link: '/layout/employee/profile/documents'
-  //     // }
-  //   ]
-  // },
+  {
+    title: 'Employee Profile',
+    icon: 'ri-user-line',
+    children: [
+      {
+        title: 'Personal Details',
+        icon: 'ri-user-3-line',
+        link: '/layout/employee/profile/personal'
+      },
+      {
+        title: 'Professional Info',
+        icon: 'ri-briefcase-line',
+        children: [
+          {
+            title: 'Qualification',
+            icon: 'ri-award-line',
+            link: '/layout/employee/profile/qualification'
+          },
+          {
+            title: 'Experience',
+            icon: 'ri-building-line',
+            link: '/layout/employee/profile/experience'
+          },
+          {
+            title: 'Skills',
+            icon: 'ri-lightbulb-line',
+            link: '/layout/employee/profile/skills'
+          }
+        ]
+      },
+      {
+        title: 'Salary Structure',
+        icon: 'ri-money-dollar-circle-line',
+        link: '/layout/employee/profile/salary'
+      },
+      // {
+      //   title: 'Documents',
+      //   icon: 'ri-file-line',
+      //   link: '/layout/employee/profile/documents'
+      // }
+    ]
+  },
   {
     title: 'Attendance & Shift',
     icon: 'ri-calendar-check-line',
@@ -173,7 +162,34 @@ isAnyChildActive(children: any[]): boolean {
   return children.some(child => child.active || (child.children && this.isAnyChildActive(child.children)));
 }
 
+// async setActiveMenuItem(currentUrl: string) {
+//   const markActive = (items: MenuItem[], parentElement?: HTMLElement) => {
+//     items.forEach(item => {
+//       const isActive = item.link === currentUrl;
+//       item.active = isActive;
 
+//       const element = document.querySelector(`[data-menu-id="${item['id']}"]`) as HTMLElement;
+
+//       if (item.children && item.children.length) {
+//         const anyChildActive = markActive(item.children, element);
+//         item.active = item.active || anyChildActive;
+
+//         if (anyChildActive && element) {
+//           element.classList.add('open'); // Open parent if child is active
+//         }
+//       }
+
+//       if (isActive && parentElement) {
+//         parentElement.classList.add('open'); // Open parent item
+//       }
+//     });
+
+//     // Return true if any item in this level is active
+//     return items.some(i => i.active);
+//   };
+
+//   markActive(this.menuItems);
+// }
 async setActiveMenuItem(currentUrl: string) {
   const markActive = (items: MenuItem[]): boolean => {
     let anyActive = false;

@@ -16,11 +16,7 @@
         <div class="menu-horizontal-wrapper">
           <ul class="menu-inner">
             <ng-container *ngFor="let menu of menuItems">
-             <li
-  class="menu-item"
-  [ngClass]="{ active: menu.active, open: isAnyChildActive(menu.children || []) }"
-  (click)="toggleMenu(menu)"
->
+              <li class="menu-item" [ngClass]="{ active: menu.active }" (click)="toggleMenu(menu)">
                 <a href="javascript:void(0)" class="menu-link menu-toggle" [routerLink]="menu.link" routerLinkActive="active">
                   <i class="menu-icon ri" [ngClass]="menu.icon"></i>
                   <div>{{ menu.title}}</div>
@@ -39,8 +35,7 @@
           <!-- Template for recursive submenu -->
           <ng-template #renderSubmenu let-submenus>
             <ng-container *ngFor="let sub of submenus">
-          <li class="menu-item" [ngClass]="{ active: sub.active, open: isAnyChildActive(sub.children) }">
-
+              <li class="menu-item" [ngClass]="{ active: sub.active }">
                 <ng-container *ngIf="!sub.children">
                   <a
                     class="menu-link"

@@ -309,7 +309,34 @@ resizeAndCompressImage(
   back(){
        this.router.navigate(["/layout/employee/joining"]);
   }
-  changeTab(name:any){
-    this.router.navigate(["/layout/employee/add/profile/qualification"])
+
+  navigateToQualification() {
+    this.router.navigate(['layout/employee/profile/qualification']);
+  }
+
+  // navigateToPersonal() {
+  //   this.router.navigate(['layout/employee/add/profile/personal']);
+  // }
+
+  navigateToBankAccount(){
+      this.router.navigate(['/layout/employee/add/profile/professional-info/bank-details']);
+  }
+  navigateToExperience() {
+    this.router.navigate(['/layout/employee/add/profile/professional-info/experience']);
+  }
+
+  navigateToSkills() {
+    this.router.navigate(['/layout/employee/add/profile/professional-info/skills']);
+  }
+
+  navigateToSalary() {
+    this.router.navigate(['/layout/employee/add/profile/professional-info/salary']);
+  }
+
+  navigateToDocuments() {
+    this.router.navigate(['/layout/employee/add/profile/professional-info/documents']);
+  }
+    navigateToLeave() {
+    this.router.navigate(['/layout/employee/add/profile/professional-info/assign-leave']);
   }
 }

@@ -91,6 +91,11 @@ addBank(dept: any): Observable<any> {
     return this.http.post(`${this.baseUrl}getBasicSalaryEmployee`, obj);
   }
 
+  assignedLeave(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}assign-leave`, data);
+  }
 
-
+   getAssignLeaveList(obj:any): Observable<any> {
+    return this.http.post(`${this.baseUrl}get-leave-by-emp`, obj);
+  }
 }
